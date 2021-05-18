@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,23 +18,21 @@ import java.util.List;
 
 public class CategoryProductActivity extends AppCompatActivity {
 
-    Toolbar appbar;
     private List<CategoryProduct> lCategoryProducts;
     DatabaseHandler dbHandler;
-    private final static String TAG = "CategoryProductActivity";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_product);
 
-        appbar = (Toolbar)findViewById(R.id.toolbar_appbar);
-
         dbHandler = new DatabaseHandler(this);
-        dbHandler.insertCategoryProduct(new CategoryProduct("Other", null));
+        dbHandler.insertCategoryProduct(new CategoryProduct("Sandwich", null));
+        dbHandler.insertCategoryProduct(new CategoryProduct("Drinks", null));
+
         //show
         lCategoryProducts = dbHandler.getListCategoryProduct();
+
         RecyclerView rv_category = (RecyclerView)findViewById(R.id.item_category);
         /*rv_category.setHasFixedSize(true);*/
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

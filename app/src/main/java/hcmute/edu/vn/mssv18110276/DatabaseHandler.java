@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,21 +47,23 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         String CREATE_ROLE_TABLE = "CREATE TABLE " + TABLE_ROLE
                 + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name TEXT"
+                + "name VARCHAR(255) NOT NULL UNIQUE"
                 + ")";
 
+        db.execSQL(CREATE_ROLE_TABLE);
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER
                 + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name TEXT,"
-                + "email TEXT,"
-                + "phone TEXT,"
-                + "password TEXT,"
+                + "name VARCHAR(255) NOT NULL UNIQUE,"
+                + "email VARCHAR(255),"
+                + "phone VARCHAR(255),"
+                + "password VARCHAR(255),"
                 + "verifyemail INTEGER,"
                 + "state INTEGER,"
                 + "role INTEGER,"
                 + "CONSTRAINT fk_user_idrole FOREIGN KEY(role) REFERENCES role(id)"
                 +")";
+        db.execSQL(CREATE_USER_TABLE);
     }
 
     // Upgrading database
@@ -70,7 +73,21 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         // Delete old tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORYPRODUCT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         // Create new tables
+        onCreate(db);
+    }
+
+    // Delete Record
+    public void deleteAllRecord(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORYPRODUCT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+
         onCreate(db);
     }
 
@@ -141,5 +158,95 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
         cursor.close();
         return  categoryProductList;
+    }
+
+    // PRODUCT
+    public void insertProduct(Product product){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", product.getsName());
+        values.put("category", product.getiIDCategory());
+        values.put("price", product.getlPrice());
+        values.put("description", product.getsDescription());
+        values.put("source", product.getsSource());
+
+        db.insert(TABLE_PRODUCT, null, values);
+        db.close();
+    }
+
+    public int updateProduct(Product product){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", product.getsName());
+        values.put("category", product.getiIDCategory());
+        values.put("price", product.getlPrice());
+        values.put("description", product.getsDescription());
+        values.put("source", product.getsSource());
+
+        return db.update(TABLE_PRODUCT, values, "id = ?", new String[]{String.valueOf(product.getiID())});
+    }
+
+    public void deleteProduct(Product product){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_PRODUCT, "id = ? ", new String[]{String.valueOf(product.getiID())});
+        db.close();
+    }
+
+    Product getProduct(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_PRODUCT, new String[]{"id","name","category","price","description", "source"}, "id = ?", new String[]{String.valueOf(id)}, null,null,null);
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+        Product product = new Product(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2)), Long.parseLong(cursor.getString(3)), cursor.getString(4), cursor.getBlob(5));
+        return product;
+    }
+
+    public List<Product> getListProduct(){
+        List<Product> productList = new ArrayList<Product>();
+        String query = "SELECT * FROM " + TABLE_PRODUCT;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+                product.setiID(Integer.parseInt(cursor.getString(0)));
+                product.setsName(cursor.getString(1));
+                product.setiIDCategory(Integer.parseInt(cursor.getString(2)));
+                product.setlPrice(Long.parseLong(cursor.getString(3)));
+                product.setsDescription(cursor.getString(4));
+                product.setsSource(cursor.getBlob(5));
+                // Adding contact to list
+                productList.add(product);
+            } while (cursor.moveToNext());
+        }
+        return productList;
+    }
+
+    public List<Product> getListProductByCategory(int idcategory){
+        List<Product> productList = new ArrayList<Product>();
+        String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE category = " + String.valueOf(idcategory);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+                product.setiID(Integer.parseInt(cursor.getString(0)));
+                product.setsName(cursor.getString(1));
+                product.setiIDCategory(idcategory);
+                product.setlPrice(Long.parseLong(cursor.getString(3)));
+                product.setsDescription(cursor.getString(4));
+                product.setsSource(cursor.getBlob(5));
+                // Adding contact to list
+                productList.add(product);
+            } while (cursor.moveToNext());
+        }
+        return productList;
     }
 }

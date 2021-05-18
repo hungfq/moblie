@@ -17,4 +17,12 @@ public class Role {
     public void setsName(String name) {
         this.sName = name;
     }
+
+    public Role(String Name){
+        this.sName = Name;
+    }
+    public void insertRole(DatabaseHandler db){
+        db.insertRole(new Role("Admin"));
+        db.insertRole(new Role("User"));
+    }
 }

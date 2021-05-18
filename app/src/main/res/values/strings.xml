@@ -13,4 +13,5 @@
     <string name="btn_back">BACK</string>
     <string name="appbar_product">PRODUCT</string>
     <string name="appbar_categoryproduct">CATEGORY PRODUCT</string>
+    <string name="notify">Sorry. No product available!</string>
 </resources>

@@ -1,6 +1,7 @@
 package hcmute.edu.vn.mssv18110276;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,7 +71,7 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
         holder.name.setText(categoryproduct.getsName());
         ImageView imageView = holder.img;
         if(categoryproduct.getsSource() == null){
-            Uri imgUri= Uri.parse("android.resource://hcmute.edu.vn.mssv18110276/drawable/no_image");
+            Uri imgUri= Uri.parse("android.resource://hcmute.edu.vn.mssv18110276/drawable/sandwich");
             imageView.setImageURI(null);
             imageView.setImageURI(imgUri);
         }
@@ -84,7 +84,10 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
             @Override
             public void onClick(View view, int position, boolean isClick) {
                 if(isClick){
-                    Toast.makeText(mContext, "Click: " + mCategoryProducts.get(position), Toast.LENGTH_LONG).show();
+                    CategoryProduct categoryproduct = (CategoryProduct) mCategoryProducts.get(position);
+                    Intent intentProduct = new Intent(mContext.getApplicationContext(), ProductActivity.class);
+                    intentProduct.putExtra("idcategory",categoryproduct.getiID());
+                    mContext.startActivity(intentProduct);
                 }
             }
         });

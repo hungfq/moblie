@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+/*        DatabaseHandler db = new DatabaseHandler(this);
+        db.deleteAllRecord();*/
+
         btn_register = (Button)findViewById(R.id.btn_register);
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentProduct = new Intent(getBaseContext(), CategoryProductActivity.class);
-                startActivity(intentProduct);
+                Intent intentCategoryProduct = new Intent(getBaseContext(), CategoryProductActivity.class);
+                startActivity(intentCategoryProduct);
             }
         });
     }
