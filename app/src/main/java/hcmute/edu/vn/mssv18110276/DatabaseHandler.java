@@ -130,12 +130,16 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     CategoryProduct getCategoryProduct(int id){
         SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CATEGORYPRODUCT + " WHERE id = " + String.valueOf(id);
 
-        Cursor cursor = db.query(TABLE_CATEGORYPRODUCT, new String[]{"id","name"}, "id = ?", new String[]{String.valueOf(id)}, null,null,null);
+        Cursor cursor = db.rawQuery(query, null);
         if(cursor != null){
             cursor.moveToFirst();
         }
-        CategoryProduct categoryProduct = new CategoryProduct(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getBlob(2));
+        CategoryProduct categoryProduct = new CategoryProduct();
+        categoryProduct.setiID(Integer.parseInt(cursor.getString(0)));
+        categoryProduct.setsName(cursor.getString(1));
+        categoryProduct.setsSource(cursor.getBlob(2));
         cursor.close();
         return categoryProduct;
     }
@@ -197,12 +201,14 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     Product getProduct(int id){
         SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE id = " + String.valueOf(id);
 
-        Cursor cursor = db.query(TABLE_PRODUCT, new String[]{"id","name","category","price","description", "source"}, "id = ?", new String[]{String.valueOf(id)}, null,null,null);
+        Cursor cursor = db.rawQuery(query, null);
         if(cursor != null){
             cursor.moveToFirst();
         }
         Product product = new Product(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2)), Long.parseLong(cursor.getString(3)), cursor.getString(4), cursor.getBlob(5));
+        cursor.close();
         return product;
     }
 
@@ -225,6 +231,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 productList.add(product);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return productList;
     }
 
@@ -247,6 +254,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 productList.add(product);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return productList;
     }
 }

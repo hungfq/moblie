@@ -27,8 +27,10 @@ public class CategoryProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category_product);
 
         dbHandler = new DatabaseHandler(this);
+/*
         dbHandler.insertCategoryProduct(new CategoryProduct("Sandwich", null));
         dbHandler.insertCategoryProduct(new CategoryProduct("Drinks", null));
+*/
 
         //show
         lCategoryProducts = dbHandler.getListCategoryProduct();

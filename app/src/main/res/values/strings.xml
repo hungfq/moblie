@@ -12,6 +12,8 @@
     <string name="btn_submit">SUBMIT</string>
     <string name="btn_back">BACK</string>
     <string name="appbar_product">PRODUCT</string>
-    <string name="appbar_categoryproduct">CATEGORY PRODUCT</string>
     <string name="notify">Sorry. No product available!</string>
+    <string name="title_activity_tab_menu">TabMenuActivity</string>
+    <string name="tab_text_1">Product</string>
+    <string name="tab_text_2">Cart</string>
 </resources>
