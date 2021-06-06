@@ -54,13 +54,14 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER
                 + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name VARCHAR(255) NOT NULL UNIQUE,"
-                + "email VARCHAR(255),"
-                + "phone VARCHAR(255),"
+                + "name VARCHAR(255) NOT NULL,"
+                + "email VARCHAR(255) NOT NULL UNIQUE,"
+                + "phone VARCHAR(255) NOT NULL UNIQUE,"
                 + "password VARCHAR(255),"
                 + "verifyemail INTEGER,"
                 + "state INTEGER,"
                 + "role INTEGER,"
+                + "source BLOB(255),"
                 + "CONSTRAINT fk_user_idrole FOREIGN KEY(role) REFERENCES role(id)"
                 +")";
         db.execSQL(CREATE_USER_TABLE);
@@ -91,7 +92,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    // ROLE
+    //region ROLE
+
     public void insertRole(Role role){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -101,7 +103,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-   // CATEGORY PRODUCT
+    //endregion
+
+   //region CATEGORY PRODUCT
     public void insertCategoryProduct(CategoryProduct categoryProduct){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -163,8 +167,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         cursor.close();
         return  categoryProductList;
     }
+//endregion
 
-    // PRODUCT
+    //region PRODUCT
     public void insertProduct(Product product){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -257,4 +262,128 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         cursor.close();
         return productList;
     }
+
+    //endregion
+
+    //region REGISTER
+    public boolean checkIfEmailExists(String userEmail){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select email from " + TABLE_USER;
+        Cursor cursor = db.rawQuery(query, null);
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                existEmail = cursor.getString(0);
+                if (existEmail.equals(userEmail)) {
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public boolean checkIfNameExists(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select name from " + TABLE_USER;
+        Cursor cursor = db.rawQuery(query, null);
+        String existName;
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                existName = cursor.getString(0);
+                if (existName.equals(userName)) {
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public boolean checkIfPhoneExists(String userPhone){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select phone from " + TABLE_USER;
+        Cursor cursor = db.rawQuery(query, null);
+        String existPhone;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existPhone = cursor.getString(0);
+                if (existPhone.equals(userPhone)) {
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public void registerUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", user.getsName());
+        values.put("email", user.getsEmail());
+        values.put("phone", user.getsPhone());
+        values.put("password", user.getsPassword());
+        values.put("verifyemail", user.getiVerifyEmail());
+        values.put("state", user.getiState());
+        values.put("role", user.getiRole());
+        values.put("source", user.getsSource());
+        db.insert(TABLE_USER, null, values);
+        db.close();
+    }
+    //endregion
+
+    //region User
+    public List<User> getListUser(){
+        List<User> userList = new ArrayList<User>();
+        String query = "SELECT id,name,email,phone,role,state,source FROM " + TABLE_USER ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User();
+                user.setiID(cursor.getInt(0));
+                user.setsName(cursor.getString(1));
+                user.setsEmail(cursor.getString(2));
+                user.setsPhone(cursor.getString(3));
+                user.setiRole(cursor.getInt(4));
+                user.setbState(cursor.getInt(5));
+                user.setsSource(cursor.getBlob(6));
+                // Adding contact to list
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return userList;
+    }
+    //endregion
+
+    //region Login
+    public boolean checkLogin(String userEmail, String passWord){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select email,password from " + TABLE_USER;
+        Cursor cursor = db.rawQuery(query, null);
+        String email;
+        String password;
+
+        if (cursor.moveToFirst()) {
+            do {
+                email = cursor.getString(0);
+                password = cursor.getString(1);
+                if (email.equals(userEmail) && password.equals(passWord)) {
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+    //endregion
 }

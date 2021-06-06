@@ -6,9 +6,10 @@ public class User {
     private String sEmail;
     private String sPhone;
     private String sPassword;
-    private Boolean bVerifyEmail;
-    private Boolean bState;
+    private int iVerifyEmail;
+    private int iState;
     private int iRole;
+    private byte[] sSource;
 
     public int getiID() {
         return iID;
@@ -45,18 +46,18 @@ public class User {
         this.sPassword = password;
     }
 
-    public Boolean getbVerifyEmail(){
-        return bVerifyEmail;
+    public int getiVerifyEmail(){
+        return iVerifyEmail;
     };
-    public void setbVerifyEmail(Boolean verifyemail){
-        this.bVerifyEmail = verifyemail;
+    public void setbVerifyEmail(int verifyemail){
+        this.iVerifyEmail = verifyemail;
     };
 
-    public Boolean getbState(){
-        return bState;
+    public int getiState(){
+        return iState;
     };
-    public void setbState(Boolean state){
-        this.bState = state;
+    public void setbState(int state){
+        this.iState = state;
     };
 
     public int getiRole() {
@@ -64,5 +65,36 @@ public class User {
     }
     public void setiRole(int role) {
         this.iRole = role;
+    }
+
+    public byte[] getsSource() {
+        return sSource;
+    }
+    public void setsSource(byte[] Src){this.sSource = Src; }
+    public User(){};
+
+    public User(String Name, String Email, String Phone, String Password, int VerifyEmail, int State, int Role, byte[] source){
+        this.sName = Name;
+        this.sEmail = Email;
+        this.sPhone = Phone;
+        this.sPassword = Password;
+        this.iVerifyEmail = VerifyEmail;
+        this.iState = State;
+        this.iRole = Role;
+        this.sSource = source;
+    }
+
+    public User(int ID, String Name, String Email, String Phone, int State, int Role){
+        this.iID = ID;
+        this.sName = Name;
+        this.sEmail = Email;
+        this.sPhone = Phone;
+        this.iState = State;
+        this.iRole = Role;
+    }
+
+    public void insertDefaultUser(DatabaseHandler db){
+        db.registerUser(new User("Tiên Giang Admin","18110276@student.hcmute.edu.vn","0383509677","matkhau123",1,1,1, null));
+        db.registerUser(new User("Tiên Giang User","default@student.hcmute.edu.vn","0383509678","matkhau123",1,1,2, null));
     }
 }

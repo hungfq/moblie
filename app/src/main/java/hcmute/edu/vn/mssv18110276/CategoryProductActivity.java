@@ -19,21 +19,17 @@ import java.util.List;
 public class CategoryProductActivity extends AppCompatActivity {
 
     private List<CategoryProduct> lCategoryProducts;
-    DatabaseHandler dbHandler;
+    DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_product);
 
-        dbHandler = new DatabaseHandler(this);
-/*
-        dbHandler.insertCategoryProduct(new CategoryProduct("Sandwich", null));
-        dbHandler.insertCategoryProduct(new CategoryProduct("Drinks", null));
-*/
-
+        db = new DatabaseHandler(this);
+        insertDefaultCategory();
         //show
-        lCategoryProducts = dbHandler.getListCategoryProduct();
+        lCategoryProducts = db.getListCategoryProduct();
 
         RecyclerView rv_category = (RecyclerView)findViewById(R.id.item_category);
         /*rv_category.setHasFixedSize(true);*/
@@ -57,5 +53,10 @@ public class CategoryProductActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return output.toByteArray();
+    }
+
+    private void insertDefaultCategory(){
+        db.insertCategoryProduct(new CategoryProduct("Sandwich", null));
+        db.insertCategoryProduct(new CategoryProduct("Drinks", null));
     }
 }
