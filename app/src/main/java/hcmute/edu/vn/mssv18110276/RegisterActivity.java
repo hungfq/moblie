@@ -1,14 +1,11 @@
 package hcmute.edu.vn.mssv18110276;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -60,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Intent intent = new Intent();
 
                 // send data
-                intent.putExtra(MainActivity.KEY_USER_FROM_REGISTER, "");
+                intent.putExtra(LoginActivity.KEY_USER_FROM_REGISTER, "");
 
                 setResult(RESULT_OK, intent);
                 finish();
@@ -79,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Intent intent = new Intent();
 
                     // send data
-                    intent.putExtra(MainActivity.KEY_USER_FROM_REGISTER, emailInput);
+                    intent.putExtra(LoginActivity.KEY_USER_FROM_REGISTER, emailInput);
 
                     setResult(RESULT_OK, intent);
                     finish();
