@@ -3,6 +3,7 @@ package hcmute.edu.vn.mssv18110276;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends BaseAdapter {
     private Activity activity;
@@ -46,7 +50,10 @@ public class ProductAdapter extends BaseAdapter {
         TextView tvPrice = (TextView) view.findViewById(R.id.tv_price);
         ImageView ivProduct = (ImageView) view.findViewById(R.id.iv_product);
         tvName.setText(products.get(i).getsName());
-        tvPrice.setText(String.valueOf(products.get(i).getlPrice()) + " VND");
+
+        Locale locale = new Locale("vn","VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        tvPrice.setText(String.valueOf(currencyFormatter.format(products.get(i).getlPrice())));
         if(products.get(i).getsSource() == null){
             Uri imgUri= Uri.parse("android.resource://hcmute.edu.vn.mssv18110276/drawable/sandwich");
             ivProduct.setImageURI(null);

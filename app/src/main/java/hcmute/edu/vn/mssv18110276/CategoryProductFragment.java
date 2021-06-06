@@ -57,7 +57,7 @@ public class CategoryProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_category_product, container, false);
+        View view = inflater.inflate(R.layout.activity_category_product, container, false);
 
         db = new DatabaseHandler(getContext());
         lCategoryProducts = db.getListCategoryProduct();

@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_cart:
+                    fragment = new CartFragment();
+                    loadFragment(fragment);
                     return true;
                 case R.id.navigation_profile:
                     return true;
