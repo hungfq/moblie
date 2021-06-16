@@ -88,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void Mapping(){
         ibtn_camera = (ImageButton)findViewById(R.id.ibtn_camera);
         tv_login = (TextView)findViewById(R.id.tv_login);
-        iv_avatar = (ImageView)findViewById(R.id.iv_avatar);
+        iv_avatar = (ImageView)findViewById(R.id.iv_avatar_profile);
         et_name = (EditText)findViewById(R.id.et_name);
         et_email = (EditText)findViewById(R.id.et_email);
         et_phone = (EditText)findViewById(R.id.et_phone);
@@ -197,7 +197,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_PIC_REQUEST) {
             Bitmap image = (Bitmap) data.getExtras().get("data");
-            ImageView iv_avatar = (ImageView) findViewById(R.id.iv_avatar); //sets imageview as the bitmap
+            ImageView iv_avatar = (ImageView) findViewById(R.id.iv_avatar_profile); //sets imageview as the bitmap
             iv_avatar.setImageBitmap(image);
         }
     }

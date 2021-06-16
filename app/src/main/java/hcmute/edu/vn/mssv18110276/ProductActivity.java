@@ -3,19 +3,29 @@ package hcmute.edu.vn.mssv18110276;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductActivity extends AppCompatActivity {
 
     List<Product> lProduct;
-    DatabaseHandler dbHandler;
+    DatabaseHandler db;
     ListView lv_product;
     Toolbar toolbar;
     @Override
@@ -24,24 +34,31 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
         toolbar = (Toolbar)findViewById(R.id.toolbar_appbar);
 
-        dbHandler = new DatabaseHandler(this);
-
-        insertDefaultProduct();
-
+        db = new DatabaseHandler(getApplicationContext());
         int idcategory = getIntent().getIntExtra("idcategory", 0);
-        lProduct = dbHandler.getListProductByCategory(idcategory);
-        if(lProduct.size() <= 0){
+        String iduser = getIntent().getStringExtra("iduser");
+        lProduct = db.getListProductByCategory(idcategory);
 
-        }
         CategoryProduct ct;
-        ct = dbHandler.getCategoryProduct(idcategory);
+        ct = db.getCategoryProduct(idcategory);
         toolbar.setTitle(ct.getsName());
         if(lProduct.size() != 0){
             ProductAdapter adapter = new ProductAdapter(this, lProduct);
             lv_product = (ListView)findViewById(R.id.lv_product);
             lv_product.setAdapter(adapter);
-        }
 
+
+            lv_product.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Product productdetail = (Product) lProduct.get(position);
+                    Intent intentProduct = new Intent(getBaseContext(), ProductDetailActivity.class);
+                    intentProduct.putExtra("idproduct",productdetail.getiID());
+                    intentProduct.putExtra("iduser",iduser);
+                    startActivity(intentProduct);
+                }
+            });
+        }
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,9 +67,4 @@ public class ProductActivity extends AppCompatActivity {
         });
     }
 
-    public void insertDefaultProduct(){
-        dbHandler.insertProduct(new Product("Tuna sandwich",1,22000,"It combine tuna, mayonnaise, celery, onion, relish, lemon juice, and garlic.",null));
-        dbHandler.insertProduct(new Product("Shrimp sandwich",1,28000,"A loaded shrimp sandwich with a kick of heat and a double dose of avocado goodness!",null));
-        dbHandler.insertProduct(new Product("Chicken sandwich",1,25000,"A delicious mix of mayonnaise, chicken, pepper and some veggies spread on the bread",null));
-    }
 }

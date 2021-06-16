@@ -38,7 +38,6 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
         {
             this.itemClickListener = itemClickListener;
         }
-
         @Override
         public void onClick(View v) {
             itemClickListener.onClick(v,getAdapterPosition(),true);
@@ -46,13 +45,14 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
     }
 
     private List mCategoryProducts;
-
     // Lưu context để dễ dàng truy cập
     private Context mContext;
+    private String mIDUser;
 
-    public CategoryProductAdapter(List _categoryproduct, Context mContext){
+    public CategoryProductAdapter(List _categoryproduct, Context mContext, String IDUser){
         this.mCategoryProducts = _categoryproduct;
         this.mContext = mContext;
+        this.mIDUser = IDUser;
     }
 
     @Override
@@ -81,7 +81,6 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
             Bitmap bitmap = BitmapFactory.decodeByteArray(categoryproduct.getsSource(), 0, categoryproduct.getsSource().length);
             imageView.setImageBitmap(bitmap);
         }
-
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isClick) {
@@ -89,6 +88,7 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
                     CategoryProduct categoryproduct = (CategoryProduct) mCategoryProducts.get(position);
                     Intent intentProduct = new Intent(mContext.getApplicationContext(), ProductActivity.class);
                     intentProduct.putExtra("idcategory",categoryproduct.getiID());
+                    intentProduct.putExtra("iduser",mIDUser);
                     mContext.startActivity(intentProduct);
                 }
             }

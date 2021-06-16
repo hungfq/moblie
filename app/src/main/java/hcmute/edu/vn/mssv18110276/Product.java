@@ -7,6 +7,9 @@ public class Product {
     private long lPrice;
     private String sDescription;
     private byte[] sSource;
+    private int iQuantity;
+    private int iState;
+
 
     public int getiID() {
         return iID;
@@ -37,23 +40,45 @@ public class Product {
         return sSource;
     }
     public void setsSource(byte[] Src){this.sSource = Src; }
+    public int getiQuantity() {
+        return iQuantity;
+    }
+    public void setiQuantity(int quantity){this.iQuantity = quantity; }
+    public int getiState() {
+        return iState;
+    }
+    public void setiState(int state){this.iState = state; }
+
 
     public Product(){};
 
-    public Product(int ID, String Name, int IDCategory, long Price, String Description, byte[] Source){
+    public Product(int ID, String Name, int IDCategory, long Price, String Description, byte[] Source, int state){
         this.iID = ID;
         this.sName = Name;
         this.iIDCategory = IDCategory;
         this.lPrice = Price;
         this.sDescription = Description;
         this.sSource = Source;
+        this.iState = state;
     }
 
-    public Product(String Name, int IDCategory, long Price, String Description, byte[] Source){
+    public Product(String Name, int IDCategory, long Price, String Description, byte[] Source, int state){
         this.sName = Name;
         this.iIDCategory = IDCategory;
         this.lPrice = Price;
         this.sDescription = Description;
         this.sSource = Source;
+        this.iState = state;
+    }
+
+    public void insertDefaultProduct(DatabaseHandler db){
+        db.insertProduct(new Product("Tuna sandwich",1,22000,"It combine tuna, mayonnaise, celery, onion, relish, lemon juice, and garlic.",null, 1));
+        db.insertProduct(new Product("Shrimp sandwich",1,28000,"A loaded shrimp sandwich with a kick of heat and a double dose of avocado goodness!",null, 1));
+        db.insertProduct(new Product("Chicken sandwich",1,25000,"A delicious mix of mayonnaise, chicken, pepper and some veggies spread on the bread",null, 1));
+        db.insertProduct(new Product("Beef sandwich",1,27000,"A delicious mix of mayonnaise, chicken, pepper and some veggies spread on the bread",null, 0));
+        db.insertProduct(new Product("Sausage sandwich",1,20000,"A delicious mix of mayonnaise, chicken, pepper and some veggies spread on the bread",null, 1));
+        db.insertProduct(new Product("Coca Cola",2,7000,"Coca",null, 1));
+        db.insertProduct(new Product("Orange Juice",2,15000,"Orange juice!",null, 1));
+        db.insertProduct(new Product("Strawberry Smoothie",2,20000,"Strawberry",null, 0));
     }
 }

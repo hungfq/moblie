@@ -31,4 +31,8 @@ public class CategoryProduct {
 
     public CategoryProduct(){};
 
+    public void insertDefaultCategory(DatabaseHandler db){
+        db.insertCategoryProduct(new CategoryProduct("Sandwich", null));
+        db.insertCategoryProduct(new CategoryProduct("Drinks", null));
+    }
 }

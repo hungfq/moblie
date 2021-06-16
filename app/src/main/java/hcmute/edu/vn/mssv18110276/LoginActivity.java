@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox cb_rememberMe;
     public static final int REQUEST_CODE_REGISTER = 1;
     public static final String KEY_USER_TO_MAIN = "KEY_USER_TO_MAIN";
-    public static final String KEY_PASSWORD_TO_MAIN = "KEY_PASSWORD_TO_MAIN";
     public static final String KEY_USER_FROM_REGISTER = "KEY_USER_FROM_REGISTER";
     SharedPreferences sharedPreferences;
     @Override
@@ -89,9 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         et_email.setError(null);
                         et_password.setError(null);
+                        int iduser = db.getIDUser(emailInput);
                         Intent intentMainActivity = new Intent(getBaseContext(), MainActivity.class);
-                        intentMainActivity.putExtra(KEY_USER_TO_MAIN, emailInput);
-                       // intentCategoryProduct.putExtra(KEY_PASSWORD_TO_MAIN, passwordInput);
+                        intentMainActivity.putExtra(KEY_USER_TO_MAIN, String.valueOf(iduser));
                         startActivity(intentMainActivity);
                         finish();
                     }
@@ -110,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_REGISTER && resultCode == Activity.RESULT_OK) {
             String email = data.getStringExtra(KEY_USER_FROM_REGISTER);
             et_email.setText(email);
+            et_password.setText("");
             et_password.requestFocus();
         }
     }
@@ -126,6 +126,12 @@ public class LoginActivity extends AppCompatActivity {
         role.insertRole(db);
         User user = new User();
         user.insertDefaultUser(db);
+        CategoryProduct categoryProduct = new CategoryProduct();
+        categoryProduct.insertDefaultCategory(db);
+        Product product = new Product();
+        product.insertDefaultProduct(db);
+        Cart cart = new Cart();
+        cart.insertDefaultCart(db);
     }
 
     public void Mapping(){

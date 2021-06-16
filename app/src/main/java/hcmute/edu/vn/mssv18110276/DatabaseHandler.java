@@ -17,6 +17,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final String TABLE_CATEGORYPRODUCT = "categoryproduct";
     private static final String TABLE_USER = "user";
     private static final String TABLE_ROLE = "role";
+    private static final String TABLE_CART = "cart";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,6 +41,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + "price DECIMAL DEFAULT(0) NOT NULL,"
                 + "description VARCHAR(255),"
                 + "source BLOB,"
+                + "quantity int NOT NULL DEFAULT 0 CHECK(quantity < 1000),"
+                + "state int NOT NULL DEFAULT 0,"
                 + "CONSTRAINT fk_product_idcategory FOREIGN KEY(category) REFERENCES categoryproduct(id)"
                 + ")";
         db.execSQL(CREATE_PRODUCT_TABLE);
@@ -65,6 +68,19 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + "CONSTRAINT fk_user_idrole FOREIGN KEY(role) REFERENCES role(id)"
                 +")";
         db.execSQL(CREATE_USER_TABLE);
+
+        String CREATE_CART_TABLE = "CREATE TABLE " + TABLE_CART
+                + "("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "idproduct INTEGER NOT NULL,"
+                + "iduser INTEGER NOT NULL,"
+                + "quantity INTEGER CHECK(quantity > 0),"
+                + "checked INTEGER DEFAULT 0,"
+                + "CONSTRAINT fk_cart_idproduct FOREIGN KEY(idproduct) REFERENCES product(id),"
+                + "CONSTRAINT fk_cart_iduser FOREIGN KEY(iduser) REFERENCES user(id)"
+                + ")";
+
+        db.execSQL(CREATE_CART_TABLE);
     }
 
     // Upgrading database
@@ -76,6 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
         // Create new tables
         onCreate(db);
     }
@@ -88,7 +105,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
         onCreate(db);
     }
 
@@ -179,7 +196,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put("price", product.getlPrice());
         values.put("description", product.getsDescription());
         values.put("source", product.getsSource());
-
+        values.put("quantity", product.getiQuantity());
+        values.put("state", product.getiState());
         db.insert(TABLE_PRODUCT, null, values);
         db.close();
     }
@@ -193,7 +211,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put("price", product.getlPrice());
         values.put("description", product.getsDescription());
         values.put("source", product.getsSource());
-
+        values.put("quantity", product.getiQuantity());
+        values.put("state", product.getiState());
         return db.update(TABLE_PRODUCT, values, "id = ?", new String[]{String.valueOf(product.getiID())});
     }
 
@@ -205,14 +224,20 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     }
 
     Product getProduct(int id){
+        String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE id = ? ";
+        Product product = new Product();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE id = " + String.valueOf(id);
-
-        Cursor cursor = db.rawQuery(query, null);
-        if(cursor != null){
-            cursor.moveToFirst();
+        Cursor cursor = db.rawQuery(query, new String[]{id + ""});
+        if (cursor.moveToFirst()) {
+            product.setiID(cursor.getInt(0));
+            product.setsName(cursor.getString(1));
+            product.setiIDCategory(cursor.getInt(2));
+            product.setlPrice(cursor.getLong(3));
+            product.setsDescription(cursor.getString(4));
+            product.setsSource(cursor.getBlob(5));
+            product.setiQuantity(cursor.getInt(6));
+            product.setiState(cursor.getInt(7));
         }
-        Product product = new Product(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2)), Long.parseLong(cursor.getString(3)), cursor.getString(4), cursor.getBlob(5));
         cursor.close();
         return product;
     }
@@ -226,12 +251,14 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         if (cursor.moveToFirst()) {
             do {
                 Product product = new Product();
-                product.setiID(Integer.parseInt(cursor.getString(0)));
+                product.setiID(cursor.getInt(0));
                 product.setsName(cursor.getString(1));
-                product.setiIDCategory(Integer.parseInt(cursor.getString(2)));
-                product.setlPrice(Long.parseLong(cursor.getString(3)));
+                product.setiIDCategory(cursor.getInt(2));
+                product.setlPrice(cursor.getLong(3));
                 product.setsDescription(cursor.getString(4));
                 product.setsSource(cursor.getBlob(5));
+                product.setiQuantity(cursor.getInt(6));
+                product.setiState(cursor.getInt(7));
                 // Adding contact to list
                 productList.add(product);
             } while (cursor.moveToNext());
@@ -242,19 +269,21 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     public List<Product> getListProductByCategory(int idcategory){
         List<Product> productList = new ArrayList<Product>();
-        String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE category = " + String.valueOf(idcategory);
+        String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE category = ? AND state = 1 " ;
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[]{idcategory + ""});
         if (cursor.moveToFirst()) {
             do {
                 Product product = new Product();
-                product.setiID(Integer.parseInt(cursor.getString(0)));
+                product.setiID(cursor.getInt(0));
                 product.setsName(cursor.getString(1));
                 product.setiIDCategory(idcategory);
-                product.setlPrice(Long.parseLong(cursor.getString(3)));
+                product.setlPrice(cursor.getLong(3));
                 product.setsDescription(cursor.getString(4));
                 product.setsSource(cursor.getBlob(5));
+                product.setiQuantity(cursor.getInt(6));
+                product.setiState(cursor.getInt(7));
                 // Adding contact to list
                 productList.add(product);
             } while (cursor.moveToNext());
@@ -363,6 +392,19 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         cursor.close();
         return userList;
     }
+
+    int getIDUser(String emailInput){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT id FROM " + TABLE_USER + " WHERE email = '" + emailInput + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+        int iduser = Integer.parseInt(cursor.getString(0));
+        cursor.close();
+        return iduser;
+    }
     //endregion
 
     //region Login
@@ -384,6 +426,170 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
         return false;
+    }
+    //endregion
+
+    //region Cart
+    public void insertItemCart(Cart cart){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idproduct", cart.getiIDProduct());
+        values.put("iduser", cart.getiIDUser());
+        values.put("quantity", cart.getiQuantity());
+
+        db.insert(TABLE_CART, null, values);
+        db.close();
+    }
+
+    public int updateQuantityCart(Cart cart){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idproduct", cart.getiIDProduct());
+        values.put("iduser", cart.getiIDUser());
+        values.put("quantity", cart.getiQuantity());
+
+        return db.update(TABLE_CART, values, "id = ?", new String[]{String.valueOf(cart.getiID())});
+    }
+
+    public void deleteItemCart(Cart cart){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_CART, "id = ? ", new String[]{String.valueOf(cart.getiID())});
+        db.close();
+    }
+
+    public List<Cart> getListCartOfUser(int iduser){
+        List<Cart> cartList = new ArrayList<Cart>();
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE iduser = " + String.valueOf(iduser);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Cart cart = new Cart();
+                cart.setiID(cursor.getInt(0));
+                cart.setiIDProduct(cursor.getInt(1));
+                cart.setiIDUser(iduser);
+                cart.setiQuantity(cursor.getInt(3));
+                cart.setiChecked(cursor.getInt(4));
+                // Adding contact to list
+                cartList.add(cart);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return cartList;
+    }
+
+    public List<Cart> getListCartOfUserChecked(int iduser){
+        List<Cart> cartList = new ArrayList<Cart>();
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE iduser = " + String.valueOf(iduser) + " AND checked = 1";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Cart cart = new Cart();
+                cart.setiID(cursor.getInt(0));
+                cart.setiIDProduct(cursor.getInt(1));
+                cart.setiIDUser(iduser);
+                cart.setiQuantity(cursor.getInt(3));
+                cart.setiChecked(cursor.getInt(4));
+                // Adding contact to list
+                cartList.add(cart);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return cartList;
+    }
+
+    public int hasProductInCart(int idproduct, int iduser){
+        List<Cart> cartList = new ArrayList<Cart>();
+        String query = "SELECT id FROM " + TABLE_CART + " WHERE iduser = ? AND idproduct = ? " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{iduser + "", idproduct + ""});
+        if(cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+
+    Cart getCart(int id){
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE id = ? ";
+        Cart cart = new Cart();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{id + ""});
+        if (cursor.moveToFirst()) {
+            cart.setiID(cursor.getInt(0));
+            cart.setiIDProduct(cursor.getInt(1));
+            cart.setiIDUser(cursor.getInt(2));
+            cart.setiQuantity(cursor.getInt(3));
+            cart.setiChecked(cursor.getInt(4));
+        }
+        cursor.close();
+        return cart;
+    }
+
+    public int checkedItemCart(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("checked", 1);
+        return db.update(TABLE_CART, values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public int checkedAllItemCart(int iduser){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("checked", 1);
+        return db.update(TABLE_CART, values, "iduser = ?", new String[]{String.valueOf(iduser)});
+    }
+
+    public int unCheckedItemCart(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("checked", 0);
+        return db.update(TABLE_CART, values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public int unCheckedAllItemCart(int iduser){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("checked", 0);
+        return db.update(TABLE_CART, values, "iduser = ?", new String[]{String.valueOf(iduser)});
+    }
+
+    public int itemCheckedSize(int iduser){
+        String query = "SELECT count(id) FROM " + TABLE_CART + " WHERE iduser = ? AND checked = 1 " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{iduser + ""});
+        if(cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+
+    public int totalPriceCheckedInCart(int iduser){
+        String query = "SELECT sum(product.price * cart.quantity) FROM " + TABLE_CART + " INNER JOIN " + TABLE_PRODUCT + " WHERE iduser = ? AND cart.checked = 1 AND cart.idproduct = product.id" ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{iduser + ""});
+        if(cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        }
+        return 0;
     }
     //endregion
 }

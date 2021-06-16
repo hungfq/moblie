@@ -26,19 +26,18 @@ public class CategoryProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_product);
 
-        db = new DatabaseHandler(this);
-        insertDefaultCategory();
+        /*db = new DatabaseHandler(this);
         //show
         lCategoryProducts = db.getListCategoryProduct();
 
         RecyclerView rv_category = (RecyclerView)findViewById(R.id.item_category);
-        /*rv_category.setHasFixedSize(true);*/
+        *//*rv_category.setHasFixedSize(true);*//*
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rv_category.setLayoutManager(layoutManager);
-        CategoryProductAdapter adapter = new CategoryProductAdapter(lCategoryProducts, this);
-        rv_category.setAdapter(adapter);
+        CategoryProductAdapter adapter = new CategoryProductAdapter(lCategoryProducts, this, );
+        rv_category.setAdapter(adapter);*/
     }
-
+/*
     private byte[] getByteArrayImage(String sURL) throws MalformedURLException {
         URL url = new URL(sURL);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -53,10 +52,6 @@ public class CategoryProductActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return output.toByteArray();
-    }
+    }*/
 
-    private void insertDefaultCategory(){
-        db.insertCategoryProduct(new CategoryProduct("Sandwich", null));
-        db.insertCategoryProduct(new CategoryProduct("Drinks", null));
-    }
 }

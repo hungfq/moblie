@@ -21,7 +21,7 @@ public class ProductAdapter extends BaseAdapter {
     private Activity activity;
     private List<Product> products;
     private int idcategory;
-
+    DatabaseHandler db;
     public ProductAdapter(Activity activity, List<Product> products) {
         this.activity = activity;
         this.products = products;
@@ -46,8 +46,8 @@ public class ProductAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = activity.getLayoutInflater();
         view = inflater.inflate(R.layout.item_product, null);
-        TextView tvName = (TextView) view.findViewById(R.id.tv_name);
-        TextView tvPrice = (TextView) view.findViewById(R.id.tv_price);
+        TextView tvName = (TextView) view.findViewById(R.id.tv_nameproduct);
+        TextView tvPrice = (TextView) view.findViewById(R.id.tv_priceproduct);
         ImageView ivProduct = (ImageView) view.findViewById(R.id.iv_product);
         tvName.setText(products.get(i).getsName());
 
@@ -63,6 +63,7 @@ public class ProductAdapter extends BaseAdapter {
             Bitmap bitmap = BitmapFactory.decodeByteArray(products.get(i).getsSource(), 0, products.get(i).getsSource().length);
             ivProduct.setImageBitmap(bitmap);
         }
+
         return view;
     }
 }
