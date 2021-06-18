@@ -23,7 +23,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="135dp"
+            android:layout_height="150dp"
             android:background="@color/babypink"
             android:backgroundTint="@color/babypink">
 
@@ -33,24 +33,23 @@
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_avatar_profile"
-                    android:layout_width="131dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_avatar_user"
+                    android:layout_width="132dp"
+                    android:layout_height="132dp"
                     android:layout_margin="10dp"
-                    android:scaleType="centerCrop"
                     android:src="@drawable/no_image"
                     app:civ_border_color="@color/babypink"
                     app:civ_border_width="2dp" />
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_nameuser"
                     android:layout_width="203dp"
                     android:layout_height="33dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:text="TextView"
                     android:textColor="#FAFAFA"
-                    android:textSize="16sp" />
+                    android:textSize="22sp" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

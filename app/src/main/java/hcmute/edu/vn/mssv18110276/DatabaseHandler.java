@@ -18,6 +18,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final String TABLE_USER = "user";
     private static final String TABLE_ROLE = "role";
     private static final String TABLE_CART = "cart";
+    private static final String TABLE_BILL = "bill";
+    private static final String TABLE_BILLDETAIL = "billdetail";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CATEGORYPRODUCT_TABLE = "CREATE TABLE " + TABLE_CATEGORYPRODUCT + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name VARCHAR(255) NOT NULL UNIQUE,"
+                + "name NVARCHAR(255) NOT NULL UNIQUE,"
                 + "source BLOB(255)"
                 + ")";
         db.execSQL(CREATE_CATEGORYPRODUCT_TABLE);
@@ -36,7 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         String CREATE_PRODUCT_TABLE = "CREATE TABLE " + TABLE_PRODUCT
                 + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name VARCHAR(255) NOT NULL UNIQUE,"
+                + "name NVARCHAR(255) NOT NULL UNIQUE,"
                 + "category int NOT NULL,"
                 + "price DECIMAL DEFAULT(0) NOT NULL,"
                 + "description VARCHAR(255),"
@@ -57,14 +59,15 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER
                 + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name VARCHAR(255) NOT NULL,"
+                + "name NVARCHAR(255) NOT NULL,"
                 + "email VARCHAR(255) NOT NULL UNIQUE,"
-                + "phone VARCHAR(255) NOT NULL UNIQUE,"
+                + "phone VARCHAR(10) NOT NULL UNIQUE,"
                 + "password VARCHAR(255),"
                 + "verifyemail INTEGER,"
                 + "state INTEGER,"
                 + "role INTEGER,"
                 + "source BLOB(255),"
+                + "address NVARCHAR(255),"
                 + "CONSTRAINT fk_user_idrole FOREIGN KEY(role) REFERENCES role(id)"
                 +")";
         db.execSQL(CREATE_USER_TABLE);
@@ -81,6 +84,33 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + ")";
 
         db.execSQL(CREATE_CART_TABLE);
+
+        String CREATE_BILL_TABLE = "CREATE TABLE " + TABLE_BILL
+                + "("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "iduser INTEGER NOT NULL,"
+                + "quantity INTEGER NOT NULL,"
+                + "personname NVARCHAR(255) NOT NULL,"
+                + "phone VARCHAR(10) NOT NULL,"
+                + "address NVARCHAR(255) NOT NULL,"
+                + "date TEXT NOT NULL,"
+                + "state INT DEFAULT 0," // 0. Dang giao 1. Da nhan 2. Da huy
+                + "CONSTRAINT fk_bill_iduser FOREIGN KEY(iduser) REFERENCES user(id)"
+                + ")";
+
+        db.execSQL(CREATE_BILL_TABLE);
+
+        String CREATE_BILLDETAIL_TABLE = "CREATE TABLE " + TABLE_BILLDETAIL
+                + "("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "idbill INTEGER NOT NULL,"
+                + "idproduct INTEGER NOT NULL,"
+                + "quantity INTEGER NOT NULL,"
+                + "unitprice DECIMAL DEFAULT(0) NOT NULL,"
+                + "CONSTRAINT fk_billdetail_idbill FOREIGN KEY(idbill) REFERENCES bill(id)"
+                + ")";
+
+        db.execSQL(CREATE_BILLDETAIL_TABLE);
     }
 
     // Upgrading database
@@ -93,6 +123,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILLDETAIL);
         // Create new tables
         onCreate(db);
     }
@@ -106,6 +138,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILLDETAIL);
         onCreate(db);
     }
 
@@ -363,6 +397,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put("state", user.getiState());
         values.put("role", user.getiRole());
         values.put("source", user.getsSource());
+        values.put("address",user.getsAddress());
         db.insert(TABLE_USER, null, values);
         db.close();
     }
@@ -371,7 +406,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     //region User
     public List<User> getListUser(){
         List<User> userList = new ArrayList<User>();
-        String query = "SELECT id,name,email,phone,role,state,source FROM " + TABLE_USER ;
+        String query = "SELECT id,name,email,phone,role,state,source,address FROM " + TABLE_USER ;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -385,6 +420,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 user.setiRole(cursor.getInt(4));
                 user.setbState(cursor.getInt(5));
                 user.setsSource(cursor.getBlob(6));
+                user.setsAddress(cursor.getString(7));
                 // Adding contact to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -404,6 +440,25 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         int iduser = Integer.parseInt(cursor.getString(0));
         cursor.close();
         return iduser;
+    }
+
+    public User getUser(int id){
+        String query = "SELECT id,name,email,phone,role,state,source,address FROM " + TABLE_USER + " WHERE id = ? ";
+        User user = new User();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{id + ""});
+        if (cursor.moveToFirst()) {
+            user.setiID(cursor.getInt(0));
+            user.setsName(cursor.getString(1));
+            user.setsEmail(cursor.getString(2));
+            user.setsPhone(cursor.getString(3));
+            user.setiRole(cursor.getInt(4));
+            user.setbState(cursor.getInt(5));
+            user.setsSource(cursor.getBlob(6));
+            user.setsAddress(cursor.getString(7));
+        }
+        cursor.close();
+        return user;
     }
     //endregion
 
@@ -434,6 +489,20 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("idproduct", cart.getiIDProduct());
+        values.put("iduser", cart.getiIDUser());
+        values.put("quantity", cart.getiQuantity());
+
+        db.insert(TABLE_CART, null, values);
+        db.close();
+    }
+
+    public void undoItemCart(Cart cart){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("id", cart.getiID());
         values.put("idproduct", cart.getiIDProduct());
         values.put("iduser", cart.getiIDUser());
         values.put("quantity", cart.getiQuantity());
@@ -579,7 +648,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return 0;
     }
 
-    public int totalPriceCheckedInCart(int iduser){
+    public long totalPriceCheckedInCart(int iduser){
         String query = "SELECT sum(product.price * cart.quantity) FROM " + TABLE_CART + " INNER JOIN " + TABLE_PRODUCT + " WHERE iduser = ? AND cart.checked = 1 AND cart.idproduct = product.id" ;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -590,6 +659,72 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             return cursor.getInt(0);
         }
         return 0;
+    }
+
+    public int totalQuantityCheckedInCart(int iduser){
+        String query = "SELECT sum(cart.quantity) FROM " + TABLE_CART + " WHERE iduser = ? AND cart.checked = 1" ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{iduser + ""});
+        if(cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+    //endregion
+
+    //region BILL
+    public int insertBill(Bill bill){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("iduser", bill.getiIDUser());
+        values.put("quantity", bill.getiQuantity());
+        values.put("personname", bill.getsPersonName());
+        values.put("phone", bill.getsPhone());
+        values.put("address", bill.getsAddress());
+        values.put("date", bill.getsDate());
+        values.put("state", bill.getiState());
+        db.insert(TABLE_BILL, null, values);
+        db.close();
+        db = this.getReadableDatabase();
+        String query = "SELECT MAX(id)  FROM " + TABLE_BILL ;
+        Cursor cursor = db.rawQuery(query,null);
+        int idbill = 0;
+        if(cursor.moveToFirst()){
+             idbill = cursor.getInt(0);
+        }
+        return idbill;
+    }
+
+    public int updateBill(Bill bill){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("iduser", bill.getiIDUser());
+        values.put("quantity", bill.getiQuantity());
+        values.put("personname", bill.getsPersonName());
+        values.put("phone", bill.getsPhone());
+        values.put("address", bill.getsAddress());
+        values.put("date", bill.getsDate());
+        values.put("state", bill.getiState());
+        return db.update(TABLE_BILL, values, "id = ?", new String[]{String.valueOf(bill.getiID())});
+    }
+    //endregion
+
+    //region BILL DETAIL
+    public void insertBillDetail(BillDetail bill){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idbill", bill.getiIDBill());
+        values.put("idproduct", bill.getiIDProduct());
+        values.put("quantity", bill.getiQuantity());
+        values.put("unitprice", bill.getlUnitPrice());
+        db.insert(TABLE_BILLDETAIL, null, values);
+        db.close();
     }
     //endregion
 }

@@ -150,7 +150,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         if (!isSelectedAll){
             holder.cb_item.setChecked(false);
         }
-        else  holder.cb_item.setChecked(true);
+        else holder.cb_item.setChecked(true);
 
         holder.et_quantity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -226,6 +226,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
+                if(holder.cb_item.isChecked()){
+                    checkedListener.onItemCheckedChange(holder.getAdapterPosition());
+                }
             }
         });
 
@@ -238,8 +241,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 holder.et_quantity.setText(String.valueOf(quantity));
                 cart.setiQuantity(quantity);
                 db.updateQuantityCart(cart);
+                if(holder.cb_item.isChecked()){
+                    checkedListener.onItemCheckedChange(holder.getAdapterPosition());
+                }
             }
         });
+
         holder.cb_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +255,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     db.checkedItemCart(cart.getiID());
                 }
                 else db.unCheckedItemCart(cart.getiID());
-                checkedListener.onItemCheckedChange();
+                checkedListener.onItemCheckedChange(position);
             }
         });
     }

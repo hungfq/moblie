@@ -10,6 +10,7 @@ public class User {
     private int iState;
     private int iRole;
     private byte[] sSource;
+    private String sAddress;
 
     public int getiID() {
         return iID;
@@ -71,6 +72,10 @@ public class User {
         return sSource;
     }
     public void setsSource(byte[] Src){this.sSource = Src; }
+
+    public String getsAddress(){return sAddress;}
+    public void setsAddress(String address){this.sAddress = address;}
+
     public User(){};
 
     public User(String Name, String Email, String Phone, String Password, int VerifyEmail, int State, int Role, byte[] source){
@@ -84,13 +89,26 @@ public class User {
         this.sSource = source;
     }
 
-    public User(int ID, String Name, String Email, String Phone, int State, int Role){
+    public User(String Name, String Email, String Phone, String Password, int VerifyEmail, int State, int Role, byte[] source, String address){
+        this.sName = Name;
+        this.sEmail = Email;
+        this.sPhone = Phone;
+        this.sPassword = Password;
+        this.iVerifyEmail = VerifyEmail;
+        this.iState = State;
+        this.iRole = Role;
+        this.sSource = source;
+        this.sAddress = address;
+    }
+
+    public User(int ID, String Name, String Email, String Phone, int State, int Role, String address){
         this.iID = ID;
         this.sName = Name;
         this.sEmail = Email;
         this.sPhone = Phone;
         this.iState = State;
         this.iRole = Role;
+        this.sAddress = address;
     }
 
     public void insertDefaultUser(DatabaseHandler db){
