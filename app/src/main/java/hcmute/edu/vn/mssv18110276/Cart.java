@@ -51,9 +51,4 @@ public class Cart {
         iIDUser = IDUser;
         iQuantity = Quantity;
     }
-
-    public void insertDefaultCart(DatabaseHandler db){
-        db.insertItemCart(new Cart(1,2,2));
-        db.insertItemCart(new Cart(1,1,1));
-    }
 }

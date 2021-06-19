@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +91,6 @@ public class CartFragment extends Fragment implements RecyclerItemTouchHelper.Re
         cb_all = view.findViewById(R.id.cb_all_item);
         tv_totalprice = view.findViewById(R.id.tv_totalprice);
         btn_placeorder = view.findViewById(R.id.btn_place_order);
-
         db = new DatabaseHandler(getContext());
         lCarts = db.getListCartOfUser(Integer.parseInt(mParamIDUser));
 
@@ -103,6 +103,9 @@ public class CartFragment extends Fragment implements RecyclerItemTouchHelper.Re
         if(lCarts.size() > 0){
             rv_cart.setVisibility(View.VISIBLE);
             giv_empty.setVisibility(View.GONE);
+            btn_placeorder.setVisibility(View.VISIBLE);
+            cb_all.setVisibility(View.VISIBLE);
+            tv_totalprice.setVisibility(View.VISIBLE);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             rv_cart.setLayoutManager(layoutManager);
             adapter = new CartAdapter(lCarts, getContext(),this);
@@ -114,6 +117,9 @@ public class CartFragment extends Fragment implements RecyclerItemTouchHelper.Re
         else {
             rv_cart.setVisibility(View.GONE);
             giv_empty.setVisibility(View.VISIBLE);
+            btn_placeorder.setVisibility(View.GONE);
+            cb_all.setVisibility(View.GONE);
+            tv_totalprice.setVisibility(View.GONE);
         }
 
         cb_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -171,11 +177,15 @@ public class CartFragment extends Fragment implements RecyclerItemTouchHelper.Re
                         size--;
                         i--;
                     }
+                    tv_totalprice.setText("");
                 }
                 if(size == 0)
                 {
                     rv_cart.setVisibility(View.GONE);
                     giv_empty.setVisibility(View.VISIBLE);
+                    btn_placeorder.setVisibility(View.GONE);
+                    cb_all.setVisibility(View.GONE);
+                    tv_totalprice.setVisibility(View.GONE);
                 }
             }
             Toast.makeText(getContext(),"Order successful. Thank you! Select 'Profile' to view your order history",Toast.LENGTH_LONG).show();

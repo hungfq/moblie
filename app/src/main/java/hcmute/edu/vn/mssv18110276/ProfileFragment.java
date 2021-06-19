@@ -1,14 +1,19 @@
 package hcmute.edu.vn.mssv18110276;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,11 +33,12 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_IDUSER = "iduser";
     private TextView tv_name;
     private ImageView iv_avatar;
-    // TODO: Rename and change types of parameters
     private String mParamIDUser;
     private User user;
     private ListView lv_profile;
     private DatabaseHandler db;
+
+    public static final int REQUEST_CODE_EDIT = 0;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -70,20 +76,69 @@ public class ProfileFragment extends Fragment {
         iv_avatar = view.findViewById(R.id.iv_avatar_user);
         db = new DatabaseHandler(getContext());
         user = db.getUser(Integer.parseInt(mParamIDUser));
-        tv_name.setText(user.getsName());
-        if(user.getsSource() == null){
-
-        }
-        else {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(user.getsSource(), 0, user.getsSource().length);
-            iv_avatar.setImageBitmap(bitmap);
-        }
+        setValue();
 
         // Inflate the layout for this fragment
         String[] lItem = {"Edit Profile", "Change Password", "Order History", "Log Out"};
         lv_profile = (ListView)view.findViewById(R.id.lv_profile);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 ,lItem);
         lv_profile.setAdapter(adapter);
+
+        lv_profile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent intentEdit = new Intent(getContext(), EditProfileActivity.class);
+                        intentEdit.putExtra(ARG_IDUSER,mParamIDUser);
+                        startActivityForResult(intentEdit, REQUEST_CODE_EDIT);
+                        break;
+                    case 1:
+                        Intent intentChange = new Intent(getContext(), ChangePasswordActivity.class);
+                        intentChange.putExtra(ARG_IDUSER,mParamIDUser);
+                        startActivity(intentChange);
+                        break;
+                    case 2:
+                        Intent intentHistory = new Intent(getContext(), BillActivity.class);
+                        intentHistory.putExtra(ARG_IDUSER,mParamIDUser);
+                        startActivity(intentHistory);
+                        break;
+                    case 3:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage("Are you sure you want to exit?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        getActivity().finish();
+                                        Intent intentLogin = new Intent(getContext(), LoginActivity.class);
+                                        startActivity(intentLogin);
+                                    }
+                                })
+                                .setNegativeButton("No", null);
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        break;
+                }
+            }
+        });
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_EDIT && resultCode == Activity.RESULT_OK) {
+            setValue();
+        }
+    }
+
+    public void setValue(){
+        user = db.getUser(Integer.parseInt(mParamIDUser));
+        tv_name.setText(user.getsName());
+        if(user.getsSource() != null){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(user.getsSource(), 0, user.getsSource().length);
+            iv_avatar.setImageBitmap(bitmap);
+        }
     }
 }

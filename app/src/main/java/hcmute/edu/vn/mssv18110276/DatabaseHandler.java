@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "storedb.db";
     private static final String TABLE_PRODUCT = "product";
     private static final String TABLE_CATEGORYPRODUCT = "categoryproduct";
@@ -95,6 +97,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + "address NVARCHAR(255) NOT NULL,"
                 + "date TEXT NOT NULL,"
                 + "state INT DEFAULT 0," // 0. Dang giao 1. Da nhan 2. Da huy
+                + "totalprice DECIMAL NOT NULL,"
                 + "CONSTRAINT fk_bill_iduser FOREIGN KEY(iduser) REFERENCES user(id)"
                 + ")";
 
@@ -126,20 +129,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILLDETAIL);
         // Create new tables
-        onCreate(db);
-    }
-
-    // Delete Record
-    public void deleteAllRecord(){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORYPRODUCT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILLDETAIL);
         onCreate(db);
     }
 
@@ -348,25 +337,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return false;
     }
 
-    public boolean checkIfNameExists(String userName){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "select name from " + TABLE_USER;
-        Cursor cursor = db.rawQuery(query, null);
-        String existName;
-
-        if (cursor.moveToFirst()) {
-            do {
-
-                existName = cursor.getString(0);
-                if (existName.equals(userName)) {
-                    return true;
-                }
-            } while (cursor.moveToNext());
-        }
-        return false;
-    }
-
     public boolean checkIfPhoneExists(String userPhone){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -380,6 +350,42 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 if (existPhone.equals(userPhone)) {
                     return true;
                 }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public boolean checkIfPhoneExistsEdit(String userPhone){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select phone from " + TABLE_USER;
+        Cursor cursor = db.rawQuery(query, null);
+        String existPhone;
+        int check = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                existPhone = cursor.getString(0);
+                if (existPhone.equals(userPhone)) {
+                    check = check + 1;
+                }
+            } while (cursor.moveToNext());
+            if(check != 1)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean checkOldPassword(int id, String oldpass){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select password from " + TABLE_USER + " where id = ? ";
+        Cursor cursor = db.rawQuery(query, new String[]{id+""});
+        String oldPass;
+        if (cursor.moveToFirst()) {
+            do {
+                oldPass = cursor.getString(0);
+                if (oldPass.equals(oldpass))
+                    return true;
             } while (cursor.moveToNext());
         }
         return false;
@@ -459,6 +465,29 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
         cursor.close();
         return user;
+    }
+
+    public int updateUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", user.getsName());
+        values.put("phone", user.getsPhone());
+        values.put("address", user.getsAddress());
+        values.put("source",user.getsSource());
+
+        return db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getiID())});
+
+    }
+
+    public int changePassword(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("password", user.getsPassword());
+
+        return db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getiID())});
+
     }
     //endregion
 
@@ -687,6 +716,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put("address", bill.getsAddress());
         values.put("date", bill.getsDate());
         values.put("state", bill.getiState());
+        values.put("totalprice", bill.getlTotalPrice());
         db.insert(TABLE_BILL, null, values);
         db.close();
         db = this.getReadableDatabase();
@@ -699,18 +729,49 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return idbill;
     }
 
-    public int updateBill(Bill bill){
+    public int updateStateBill(Bill bill){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("iduser", bill.getiIDUser());
-        values.put("quantity", bill.getiQuantity());
-        values.put("personname", bill.getsPersonName());
-        values.put("phone", bill.getsPhone());
-        values.put("address", bill.getsAddress());
-        values.put("date", bill.getsDate());
         values.put("state", bill.getiState());
         return db.update(TABLE_BILL, values, "id = ?", new String[]{String.valueOf(bill.getiID())});
+    }
+
+    public List<Bill> getListBillOfUser(int iduser){
+        List<Bill> billList = new ArrayList<Bill>();
+        String query = "SELECT id, date, state FROM " + TABLE_BILL + " WHERE iduser = " + String.valueOf(iduser) + " ORDER BY id DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Bill bill = new Bill();
+                bill.setiID(cursor.getInt(0));
+                bill.setsDate(cursor.getString(1));
+                bill.setiState(cursor.getInt(2));
+                // Adding contact to list
+                billList.add(bill);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return billList;
+    }
+
+    Bill getBill(int id){
+        String query = "SELECT personname, phone, address, quantity, state, totalprice FROM " + TABLE_BILL + " WHERE id = ? ";
+        Bill bill = new Bill();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{id + ""});
+        if (cursor.moveToFirst()) {
+            bill.setsPersonName(cursor.getString(0));
+            bill.setsPhone(cursor.getString(1));
+            bill.setsAddress(cursor.getString(2));
+            bill.setiQuantity(cursor.getInt(3));
+            bill.setiState(cursor.getInt(4));
+            bill.setlTotalPrice(cursor.getLong(5));
+        }
+        cursor.close();
+        return bill;
     }
     //endregion
 
@@ -725,6 +786,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put("unitprice", bill.getlUnitPrice());
         db.insert(TABLE_BILLDETAIL, null, values);
         db.close();
+    }
+
+    public List<BillDetail> getListBillDetail(int idbill){
+        List<BillDetail> billList = new ArrayList<BillDetail>();
+        String query = "SELECT idproduct, quantity, unitprice FROM " + TABLE_BILLDETAIL + " WHERE idbill = " + String.valueOf(idbill);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                BillDetail bill = new BillDetail();
+                bill.setiIDProduct(cursor.getInt(0));
+                bill.setiQuantity(cursor.getInt(1));
+                bill.setlUnitPrice(cursor.getLong(2));
+                // Adding contact to list
+                billList.add(bill);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return billList;
     }
     //endregion
 }

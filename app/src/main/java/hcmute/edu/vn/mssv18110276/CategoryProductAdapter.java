@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,11 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
             Uri imgUri= Uri.parse("android.resource://hcmute.edu.vn.mssv18110276/drawable/sandwich");
             imageView.setImageURI(null);
             imageView.setImageURI(imgUri);
+            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] source = baos.toByteArray();
+            Log.d("HINH ANH", String.valueOf(source));
         }
         else{
             Bitmap bitmap = BitmapFactory.decodeByteArray(categoryproduct.getsSource(), 0, categoryproduct.getsSource().length);

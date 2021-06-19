@@ -18,14 +18,20 @@ public class Role {
         this.sName = name;
     }
 
-    public Role(String Name){
+    public Role(int id, String Name){
+        this.iID = id;
         this.sName = Name;
     }
 
     public Role(){}
 
     public void insertRole(DatabaseHandler db){
-        db.insertRole(new Role("Admin"));
-        db.insertRole(new Role("User"));
+        try {
+            db.insertRole(new Role(1, "Admin"));
+            db.insertRole(new Role(2, "User"));
+        }
+        catch (Exception e){
+
+        }
     }
 }

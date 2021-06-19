@@ -78,6 +78,19 @@ public class User {
 
     public User(){};
 
+    public User(int id,String Name, String Email, String Phone, String Password, int VerifyEmail, int State, int Role, byte[] source, String address){
+        this.iID = id;
+        this.sName = Name;
+        this.sEmail = Email;
+        this.sPhone = Phone;
+        this.sPassword = Password;
+        this.iVerifyEmail = VerifyEmail;
+        this.iState = State;
+        this.iRole = Role;
+        this.sSource = source;
+        this.sAddress = address;
+    }
+
     public User(String Name, String Email, String Phone, String Password, int VerifyEmail, int State, int Role, byte[] source){
         this.sName = Name;
         this.sEmail = Email;
@@ -109,10 +122,5 @@ public class User {
         this.iState = State;
         this.iRole = Role;
         this.sAddress = address;
-    }
-
-    public void insertDefaultUser(DatabaseHandler db){
-        db.registerUser(new User("Tiên Giang Admin","18110276@student.hcmute.edu.vn","0383509677","matkhau123",1,1,1, null));
-        db.registerUser(new User("Tiên Giang User","default@student.hcmute.edu.vn","0383509678","matkhau123",1,1,2, null));
     }
 }

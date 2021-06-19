@@ -76,10 +76,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                         String regex = "[0-9]+[\\.]?[0-9]*";
                         if (v.getText().length() <= 0 || v.getText().toString() == "0" || !Pattern.matches(regex, v.getText().toString())) {
                             Toast.makeText(ProductDetailActivity.this, "Invalid input", Toast.LENGTH_SHORT).show();
-                            et_quantity.setText(quantity_temp);
+                            et_quantity.setText(String.valueOf(quantity_temp));
                         } else if (Integer.parseInt(v.getText().toString()) > product.getiQuantity()) {
                             Toast.makeText(ProductDetailActivity.this, "Product exceeds the allowed quantity", Toast.LENGTH_SHORT).show();
-                            et_quantity.setText(quantity_temp);
+                            et_quantity.setText(String.valueOf(quantity_temp));
                         }
                         else if(Integer.parseInt(v.getText().toString()) == 1){
                             cv_decrease.setEnabled(false);
@@ -109,8 +109,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         cv_increase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quantity_temp = quantity_temp + 1;
-                et_quantity.setText(String.valueOf(quantity_temp));
+                if (quantity_temp == product.getiQuantity()) {
+                    Toast.makeText(ProductDetailActivity.this, "Product exceeds the allowed quantity", Toast.LENGTH_SHORT).show();
+                    et_quantity.setText(String.valueOf(quantity_temp));
+                }
+                else {
+                    quantity_temp = quantity_temp + 1;
+                    et_quantity.setText(String.valueOf(quantity_temp));
+                }
+
                 cv_decrease.setEnabled(true);
              }
         });
@@ -122,9 +129,15 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Cart cart;
                 int idcart = db.hasProductInCart(id,Integer.parseInt(iduser));
                 if(idcart != 0){
-                    cart = db.getCart(idcart);
-                    cart.setiQuantity(quantity_temp + cart.getiQuantity());
-                    db.updateQuantityCart(cart);
+                    Cart cart_quantity = db.getCart(idcart);
+                    if(cart_quantity.getiQuantity() >= product.getiQuantity()){
+                        Toast.makeText(ProductDetailActivity.this, "Product exceeds the allowed quantity", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        cart = db.getCart(idcart);
+                        cart.setiQuantity(quantity_temp + cart.getiQuantity());
+                        db.updateQuantityCart(cart);
+                    }
                 }
                 else {
                     cart = new Cart(id,Integer.parseInt(iduser),quantity_temp);

@@ -1,5 +1,7 @@
 package hcmute.edu.vn.mssv18110276;
 
+import android.widget.TextView;
+
 public class CategoryProduct {
     private int iID;
     private String sName;

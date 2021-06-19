@@ -1,12 +1,12 @@
 package hcmute.edu.vn.mssv18110276;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,24 +16,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import java.io.ByteArrayOutputStream;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private static final int CAMERA_PIC_REQUEST = 1337;
-    ImageButton ibtn_camera;
-    TextView tv_login;
-    ImageView iv_avatar;
-    EditText et_name, et_email, et_phone, et_password, et_confirmpassword;
-    Button btn_register;
-    DatabaseHandler db;
+    private ImageButton ibtn_camera;
+    private TextView tv_login;
+    private ImageView iv_avatar;
+    private EditText et_name, et_email, et_phone, et_password, et_confirmpassword;
+    private Button btn_register;
+    private DatabaseHandler db;
     // Khai báo
-    String emailInput;
-    String nameInput;
-    String phoneInput;
-    String passwordInput;
-    String passwordConfirm;
-    byte[] source;
+    private String emailInput;
+    private String nameInput;
+    private String phoneInput;
+    private String passwordInput;
+    private String passwordConfirm;
+    private byte[] source;
+
+    private int REQUEST_CODE_VERIFY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +72,12 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(checkValidate()){
                     ImageViewToByteArray();
-                    Log.d("Dang ky",phoneInput + " " + emailInput + " " + source);
-                    db.registerUser(new User(nameInput,emailInput,phoneInput,passwordInput,1,1,2,source));
+                    db.registerUser(new User(nameInput,emailInput,phoneInput,passwordInput,1,1,2,source, ""));
+                    int id = db.getIDUser(emailInput);
                     Toast.makeText(RegisterActivity.this, "Đăng ký thành công! Vui lòng đăng nhập để vào ứng dụng.",Toast.LENGTH_LONG).show();
-                    // create intent to send data back Login Activity
-                    Intent intent = new Intent();
 
                     // send data
+                    Intent intent = new Intent();
                     intent.putExtra(LoginActivity.KEY_USER_FROM_REGISTER, emailInput);
 
                     setResult(RESULT_OK, intent);
@@ -98,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean checkValidate(){
-        if(validateName() == true && validateEmail() == true && validatePhone() == true && validatePassword() == true && validatePasswordConfirm() == true){
+        if(validateName() && validateEmail() && validatePhone() && validatePassword() && validatePasswordConfirm()){
             return true;
         }
         return false;
@@ -125,10 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateName() {
         nameInput = et_name.getText().toString().trim();
 
-        if (db.checkIfNameExists(nameInput)) {
-            et_name.setError("Name already exist");
-            return false;
-        } else if (nameInput.isEmpty()) {
+        if (nameInput.isEmpty()) {
             et_name.setError("Field can't be empty");
             return false;
         } else {
@@ -195,10 +194,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_PIC_REQUEST) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
-            ImageView iv_avatar = (ImageView) findViewById(R.id.iv_avatar_profile); //sets imageview as the bitmap
-            iv_avatar.setImageBitmap(image);
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
+            try{
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                ImageView iv_avatar = (ImageView) findViewById(R.id.iv_avatar_profile); //sets imageview as the bitmap
+                iv_avatar.setImageBitmap(image);
+            }
+            catch (Exception e){
+
+            }
         }
     }
 }

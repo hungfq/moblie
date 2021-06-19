@@ -11,6 +11,7 @@ public class Bill {
     private String sAddress;
     private String sDate;
     private int iState;
+    private long lTotalPrice;
 
     public int getiID() {
         return iID;
@@ -44,9 +45,17 @@ public class Bill {
     }
     public void setiState(int state){this.iState = state; }
 
+    public long getlTotalPrice() {
+        return lTotalPrice;
+    }
+
+    public void setlTotalPrice(long lTotalPrice) {
+        this.lTotalPrice = lTotalPrice;
+    }
+
     public Bill(){}
 
-    public Bill(int ID, int IDUser, int Quantity, String name, String phone, String address, String date, int State){
+    public Bill(int ID, int IDUser, int Quantity, String name, String phone, String address, String date, int State, long totalprice){
         iID = ID;
         iIDUser = IDUser;
         iQuantity = Quantity;
@@ -55,9 +64,10 @@ public class Bill {
         sAddress = address;
         sDate = date;
         iState = State;
+        lTotalPrice = totalprice;
     }
 
-    public Bill(int IDUser, int Quantity, String name, String phone, String address, String date, int State){
+    public Bill(int IDUser, int Quantity, String name, String phone, String address, String date, int State, long totalprice){
         iIDUser = IDUser;
         iQuantity = Quantity;
         sPersonName = name;
@@ -65,5 +75,6 @@ public class Bill {
         sAddress = address;
         sDate = date;
         iState = State;
+        lTotalPrice = totalprice;
     }
 }

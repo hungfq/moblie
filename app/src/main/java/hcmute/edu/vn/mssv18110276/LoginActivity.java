@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -35,9 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        db = new DatabaseHandler(this);
-        db.deleteAllRecord();
-        insert();
+        db = new DatabaseHandler(getApplicationContext());
         Mapping();
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
 
@@ -72,32 +71,37 @@ public class LoginActivity extends AppCompatActivity {
                         et_email.setError("Email address isn't registered yet.");
                     } else
                     if(db.checkLogin(emailInput, passwordInput)){
-                        if(cb_rememberMe.isChecked()){
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("username", emailInput);
-                            editor.putString("password", passwordInput);
-                            editor.putBoolean("checked" ,true);
-                            editor.commit();
-                        }
-                        else {
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.remove("username");
-                            editor.remove("password");
-                            editor.remove("checked");
-                            editor.commit();
-                        }
-                        et_email.setError(null);
-                        et_password.setError(null);
                         int iduser = db.getIDUser(emailInput);
-                        Intent intentMainActivity = new Intent(getBaseContext(), MainActivity.class);
-                        intentMainActivity.putExtra(KEY_USER_TO_MAIN, String.valueOf(iduser));
-                        startActivity(intentMainActivity);
-                        finish();
+                        User user = db.getUser(iduser);
+                        if(user.getiState() == 1){
+                            if(cb_rememberMe.isChecked()){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("username", emailInput);
+                                editor.putString("password", passwordInput);
+                                editor.putBoolean("checked" ,true);
+                                editor.commit();
+                            }
+                            else {
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.remove("username");
+                                editor.remove("password");
+                                editor.remove("checked");
+                                editor.commit();
+                            }
+                            et_email.setError(null);
+                            et_password.setError(null);
+                            Intent intentMainActivity = new Intent(getBaseContext(), MainActivity.class);
+                            intentMainActivity.putExtra(KEY_USER_TO_MAIN, String.valueOf(iduser));
+                            startActivity(intentMainActivity);
+                            finish();
+                        }
+                        else Toast.makeText(getApplicationContext(),"Your account has been disabled",Toast.LENGTH_SHORT).show();
                     }
                     else {
                         et_password.setError("The password you entered is incorrect.");
                     }
                 }
+
             }
         });
     }
@@ -120,18 +124,6 @@ public class LoginActivity extends AppCompatActivity {
         {
             Log.d("List User", String.valueOf(lUser.get(i).getiID()) + " " + lUser.get(i).getsName());
         }
-    }
-    private void insert(){
-        Role role = new Role();
-        role.insertRole(db);
-        User user = new User();
-        user.insertDefaultUser(db);
-        CategoryProduct categoryProduct = new CategoryProduct();
-        categoryProduct.insertDefaultCategory(db);
-        Product product = new Product();
-        product.insertDefaultProduct(db);
-        Cart cart = new Cart();
-        cart.insertDefaultCart(db);
     }
 
     public void Mapping(){

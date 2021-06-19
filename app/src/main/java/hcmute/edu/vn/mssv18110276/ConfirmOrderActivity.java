@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -29,6 +28,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     private User user;
     private List<Cart> lCarts;
     DatabaseHandler db;
+    private long total_all_price;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             et_personphone.getText().toString(),
                             et_personaddress.getText().toString(),
                             date.toString(),
-                            0);
+                            0,
+                            total_all_price);
                     int idbill = db.insertBill(bill);
                     Product product;
                     BillDetail billDetail;
@@ -108,8 +109,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         et_personname = (EditText) findViewById(R.id.et_personname);
         et_personphone = (EditText) findViewById(R.id.et_personphone);
         et_personaddress = (EditText) findViewById(R.id.et_personaddress);
-        tv_totalprice = (TextView) findViewById(R.id.tv_totalprice_confirm);
-        tv_totalquantity = (TextView)findViewById(R.id.tv_totalquantity);
+        tv_totalprice = (TextView) findViewById(R.id.tv_totalprice_bill);
+        tv_totalquantity = (TextView)findViewById(R.id.tv_totalquantity_bill);
         btn_confirm = (Button) findViewById(R.id.btn_confirm);
     }
 
@@ -120,7 +121,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         et_personaddress.setText(user.getsAddress());
         Locale locale = new Locale("vn","VN");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        long total_all_price = db.totalPriceCheckedInCart(Integer.parseInt(idUser));
+        total_all_price = db.totalPriceCheckedInCart(Integer.parseInt(idUser));
         tv_totalprice.setText(currencyFormatter.format(total_all_price));
         tv_totalquantity.setText(String.valueOf(db.totalQuantityCheckedInCart(Integer.parseInt(idUser))));
     }

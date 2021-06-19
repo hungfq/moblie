@@ -57,6 +57,12 @@ public class CategoryProductFragment extends Fragment {
 
         db = new DatabaseHandler(getContext());
         lCategoryProducts = db.getListCategoryProduct();
+        if(lCategoryProducts.size() == 0){
+            CategoryProduct categoryProduct = new CategoryProduct();
+            categoryProduct.insertDefaultCategory(db);
+            Product product = new Product();
+            product.insertDefaultProduct(db);
+        }
         //show
 
         RecyclerView rv_category = view.findViewById(R.id.item_category);

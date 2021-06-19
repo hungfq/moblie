@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
@@ -155,6 +156,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.et_quantity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                cart = (Cart) mCarts.get(position);
+                int quantity = cart.getiQuantity();
+                product = db.getProduct(cart.getiIDProduct());
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         actionId == EditorInfo.IME_ACTION_DONE ||
                         event != null &&
@@ -183,7 +187,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
-                        else if(Integer.parseInt(v.getText().toString()) > 0){
+                        else if(Integer.parseInt(v.getText().toString()) > product.getiQuantity()){
+                            v.setText(String.valueOf(quantity));
+                            Toast.makeText(mContext.getApplicationContext(), "Product exceeds the allowed quantity", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
                             cart.setiQuantity(Integer.parseInt(v.getText().toString()));
                             db.updateQuantityCart(cart);
                         }
@@ -237,10 +245,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClick(View v) {
                 cart = (Cart) mCarts.get(position);
                 int quantity = cart.getiQuantity();
-                quantity = quantity + 1;
-                holder.et_quantity.setText(String.valueOf(quantity));
-                cart.setiQuantity(quantity);
-                db.updateQuantityCart(cart);
+                product = db.getProduct(cart.getiIDProduct());
+                if(quantity == product.getiQuantity()){
+                    Toast.makeText(mContext.getApplicationContext(), "Product exceeds the allowed quantity", Toast.LENGTH_SHORT).show();
+                    holder.et_quantity.setText(String.valueOf(quantity));
+                }
+                else {
+                    quantity = quantity + 1;
+                    holder.et_quantity.setText(String.valueOf(quantity));
+                    cart.setiQuantity(quantity);
+                    db.updateQuantityCart(cart);
+                }
                 if(holder.cb_item.isChecked()){
                     checkedListener.onItemCheckedChange(holder.getAdapterPosition());
                 }
