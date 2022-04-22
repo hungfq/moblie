@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         et_email.setText(sharedPreferences.getString("username", ""));
         et_password.setText(sharedPreferences.getString("password", ""));
         cb_rememberMe.setChecked(sharedPreferences.getBoolean("checked", false));
-         /*  logD();*/
+
         btn_register = (Button)findViewById(R.id.btn_register);
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                             et_password.setError(null);
                             Intent intentMainActivity = new Intent(getBaseContext(), MainActivity.class);
                             intentMainActivity.putExtra(KEY_USER_TO_MAIN, String.valueOf(iduser));
+                            intentMainActivity.putExtra("idRole", String.valueOf(user.getiRole()));
                             startActivity(intentMainActivity);
                             finish();
                         }
