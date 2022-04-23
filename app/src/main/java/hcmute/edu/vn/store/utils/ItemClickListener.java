@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.utils;
 
 import android.view.View;
 

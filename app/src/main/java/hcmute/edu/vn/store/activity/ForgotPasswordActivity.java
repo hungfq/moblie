@@ -1,9 +1,11 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import hcmute.edu.vn.store.R;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 

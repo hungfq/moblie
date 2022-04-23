@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.Cart;
 import hcmute.edu.vn.store.bean.Product;
 import hcmute.edu.vn.store.constants.Resource;

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +11,9 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.adapter.ProductAdapter;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.bean.Product;
 

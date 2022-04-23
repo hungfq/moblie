@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.bean.Product;
 

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import static java.lang.Integer.parseInt;
 
@@ -16,6 +16,11 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import hcmute.edu.vn.store.fracment.CartFragment;
+import hcmute.edu.vn.store.fracment.CategoryProductFragment;
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.fracment.ProfileFragment;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.User;
 
 public class MainActivity extends AppCompatActivity {

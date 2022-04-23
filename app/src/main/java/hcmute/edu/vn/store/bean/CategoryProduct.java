@@ -1,6 +1,6 @@
 package hcmute.edu.vn.store.bean;
 
-import hcmute.edu.vn.store.DatabaseHandler;
+import hcmute.edu.vn.store.db.DatabaseHandler;
 
 public class CategoryProduct {
     private int iID;

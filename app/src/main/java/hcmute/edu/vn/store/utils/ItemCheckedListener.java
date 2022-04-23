@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.utils;
 
 public interface ItemCheckedListener {
     void onItemCheckedChange(int position);

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.fracment;
 
 import android.os.Bundle;
 
@@ -17,6 +17,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
+import hcmute.edu.vn.store.adapter.CategoryProductAdapter;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.bean.Product;
 

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import hcmute.edu.vn.store.utils.ItemClickListener;
+import hcmute.edu.vn.store.R;
+import hcmute.edu.vn.store.activity.ProductActivity;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.constants.Resource;
 

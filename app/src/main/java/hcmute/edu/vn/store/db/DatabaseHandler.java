@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.db;
 
 import                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            static hcmute.edu.vn.store.constants.DB.TABLE_BILL;
 import static hcmute.edu.vn.store.constants.DB.TABLE_BILLDETAIL;
@@ -182,7 +182,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    CategoryProduct getCategoryProduct(int id){
+    public CategoryProduct getCategoryProduct(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_CATEGORYPRODUCT + " WHERE id = " + String.valueOf(id);
 
@@ -198,7 +198,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return categoryProduct;
     }
 
-    List<CategoryProduct> getListCategoryProduct(){
+    public List<CategoryProduct> getListCategoryProduct(){
         List<CategoryProduct> categoryProductList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_CATEGORYPRODUCT;
 
@@ -256,7 +256,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    Product getProduct(int id){
+    public Product getProduct(int id){
         String query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE id = ? ";
         Product product = new Product();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -445,7 +445,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return userList;
     }
 
-    int getIDUser(String emailInput){
+    public int getIDUser(String emailInput){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT id FROM " + TABLE_USER + " WHERE email = '" + emailInput + "'";
 
@@ -626,7 +626,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return 0;
     }
 
-    Cart getCart(int id){
+    public Cart getCart(int id){
         String query = "SELECT * FROM " + TABLE_CART + " WHERE id = ? ";
         Cart cart = new Cart();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -767,7 +767,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return billList;
     }
 
-    Bill getBill(int id){
+    public Bill getBill(int id){
         String query = "SELECT personname, phone, address, quantity, state, totalprice FROM " + TABLE_BILL + " WHERE id = ? ";
         Bill bill = new Bill();
         SQLiteDatabase db = this.getReadableDatabase();

@@ -11,18 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Store">
-        <activity android:name=".InsertActivity"></activity>
-        <activity android:name=".BillDetailActivity" />
-        <activity android:name=".ChangePasswordActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ConfirmOrderActivity" />
+        <activity android:name=".activity.InsertActivity"></activity>
+        <activity android:name=".activity.BillDetailActivity" />
+        <activity android:name=".activity.ChangePasswordActivity" />
+        <activity android:name=".activity.EditProfileActivity" />
+        <activity android:name=".activity.ConfirmOrderActivity" />
         <activity android:name=".activity.BillActivity" />
-        <activity android:name=".ProductDetailActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ProductActivity" />
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.ProductDetailActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.ProductActivity" />
+        <activity android:name=".activity.ForgotPasswordActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

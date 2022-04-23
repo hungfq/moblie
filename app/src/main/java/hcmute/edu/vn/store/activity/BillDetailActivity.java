@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.adapter.BillDetailAdapter;
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.Bill;
 import hcmute.edu.vn.store.bean.BillDetail;
 

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -15,6 +15,8 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.Product;
 import hcmute.edu.vn.store.constants.Resource;
 

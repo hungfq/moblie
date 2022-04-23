@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.fracment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,6 +27,12 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.utils.ItemCheckedListener;
+import hcmute.edu.vn.store.R;
+import hcmute.edu.vn.store.utils.RecyclerItemTouchHelper;
+import hcmute.edu.vn.store.activity.ConfirmOrderActivity;
+import hcmute.edu.vn.store.adapter.CartAdapter;
 import hcmute.edu.vn.store.bean.Cart;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -35,7 +41,7 @@ import pl.droidsonroids.gif.GifImageView;
  * Use the {@link CartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CartFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, ItemCheckedListener  {
+public class CartFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, ItemCheckedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

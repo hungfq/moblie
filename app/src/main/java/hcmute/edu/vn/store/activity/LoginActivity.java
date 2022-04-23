@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentRegister = new Intent(getBaseContext(),RegisterActivity.class);
+                Intent intentRegister = new Intent(getBaseContext(), RegisterActivity.class);
                 startActivityForResult(intentRegister, REQUEST_CODE_REGISTER);
             }
         });

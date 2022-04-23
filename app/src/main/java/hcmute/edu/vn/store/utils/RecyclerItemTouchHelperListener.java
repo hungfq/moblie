@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.utils;
 
 import androidx.recyclerview.widget.RecyclerView;
 

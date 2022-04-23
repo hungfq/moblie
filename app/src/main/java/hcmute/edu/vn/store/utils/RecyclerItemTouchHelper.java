@@ -1,9 +1,11 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.utils;
 import android.graphics.Canvas;
 import android.view.View;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import hcmute.edu.vn.store.adapter.CartAdapter;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private RecyclerItemTouchHelperListener listener;

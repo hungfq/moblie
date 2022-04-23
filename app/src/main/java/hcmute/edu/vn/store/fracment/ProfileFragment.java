@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.fracment;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -19,7 +19,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.activity.BillActivity;
+import hcmute.edu.vn.store.activity.ChangePasswordActivity;
+import hcmute.edu.vn.store.activity.EditProfileActivity;
+import hcmute.edu.vn.store.activity.LoginActivity;
 import hcmute.edu.vn.store.bean.Role;
 import hcmute.edu.vn.store.bean.User;
 

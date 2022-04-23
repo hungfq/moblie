@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+import hcmute.edu.vn.store.db.DatabaseHandler;
+import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.User;
 
 public class RegisterActivity extends AppCompatActivity {

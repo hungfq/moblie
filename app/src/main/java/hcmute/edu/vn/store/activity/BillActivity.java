@@ -12,9 +12,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import hcmute.edu.vn.store.BillAdapter;
-import hcmute.edu.vn.store.BillDetailActivity;
-import hcmute.edu.vn.store.DatabaseHandler;
+import hcmute.edu.vn.store.adapter.BillAdapter;
+import hcmute.edu.vn.store.db.DatabaseHandler;
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.Bill;
 
