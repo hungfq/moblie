@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import hcmute.edu.vn.store.activity.BillActivity;
+import hcmute.edu.vn.store.bean.Role;
 import hcmute.edu.vn.store.bean.User;
 
 /**
@@ -31,10 +33,13 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_IDUSER = "iduser";
+    private static final String ARG_IDROLE = "idRole";
     private TextView tv_name;
     private ImageView iv_avatar;
     private String mParamIDUser;
+    private String mparamIDRole;
     private User user;
+    private Role role;
     private ListView lv_profile;
     private DatabaseHandler db;
 
@@ -65,6 +70,8 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParamIDUser = getArguments().getString(ARG_IDUSER);
+            mparamIDRole = getArguments().getString(ARG_IDROLE);
+
         }
     }
 
@@ -80,6 +87,10 @@ public class ProfileFragment extends Fragment {
 
         // Inflate the layout for this fragment
         String[] lItem = {"Edit Profile", "Change Password", "Order History", "Log Out"};
+        if(Integer.parseInt(mparamIDRole) == 2) {
+            lItem = new String[]{"Edit Profile", "Change Password", "Order History", "Add product", "Add Category", "Log Out"};
+        }
+
         lv_profile = (ListView)view.findViewById(R.id.lv_profile);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 ,lItem);
         lv_profile.setAdapter(adapter);

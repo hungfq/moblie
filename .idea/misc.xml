@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mobile/Store_MobileProgramming/app/src/main/res/layout/activity_add_product.xml" value="0.2" />
         <entry key="..\:/Mobile/Store_MobileProgramming/app/src/main/res/layout/activity_bill.xml" value="0.17831813576494426" />
+        <entry key="..\:/Mobile/Store_MobileProgramming/app/src/main/res/layout/activity_insert.xml" value="0.1" />
+        <entry key="..\:/Mobile/Store_MobileProgramming/app/src/main/res/layout/activity_product_detail.xml" value="0.1" />
+        <entry key="..\:/Mobile/Store_MobileProgramming/app/src/main/res/layout/content_add_product.xml" value="0.1421875" />
       </map>
     </option>
   </component>

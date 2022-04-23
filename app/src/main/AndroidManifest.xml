@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hcmute.edu.vn.store" >
+    package="hcmute.edu.vn.store">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,21 +10,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Store" >
-        <activity android:name="hcmute.edu.vn.store.InsertActivity" >
-
-        </activity>
-        <activity android:name="hcmute.edu.vn.store.BillDetailActivity" />
-        <activity android:name="hcmute.edu.vn.store.ChangePasswordActivity" />
-        <activity android:name="hcmute.edu.vn.store.EditProfileActivity" />
-        <activity android:name="hcmute.edu.vn.store.ConfirmOrderActivity" />
-        <activity android:name="hcmute.edu.vn.store.BillActivity" />
-        <activity android:name="hcmute.edu.vn.store.ProductDetailActivity" />
-        <activity android:name="hcmute.edu.vn.store.MainActivity" />
-        <activity android:name="hcmute.edu.vn.store.ProductActivity" />
-        <activity android:name="hcmute.edu.vn.store.ForgotPasswordActivity" />
-        <activity android:name="hcmute.edu.vn.store.RegisterActivity" />
-        <activity android:name="hcmute.edu.vn.store.LoginActivity" >
+        android:theme="@style/Theme.Store">
+        <activity android:name=".InsertActivity"></activity>
+        <activity android:name=".BillDetailActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".ConfirmOrderActivity" />
+        <activity android:name=".activity.BillActivity" />
+        <activity android:name=".ProductDetailActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ProductActivity" />
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

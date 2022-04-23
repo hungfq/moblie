@@ -1,5 +1,7 @@
 package hcmute.edu.vn.store;
 
+import static java.lang.Integer.parseInt;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Intent intent = getIntent();
         String idUser = intent.getStringExtra(KEY_USER_TO_MAIN);
+        String idRole = intent.getStringExtra("idRole");
         bundle = new Bundle();
         bundle.putString("iduser", idUser);
+        bundle.putString("idRole", idRole);
 
         // load lúc đầu
         Fragment fragment;

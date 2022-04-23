@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.bean.Bill;
+
 public class BillAdapter extends BaseAdapter {
     private Activity activity;
     private List<Bill> bills;

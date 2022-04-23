@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import hcmute.edu.vn.store.constans.Resource;
+import hcmute.edu.vn.store.bean.Cart;
+import hcmute.edu.vn.store.bean.Product;
+import hcmute.edu.vn.store.constants.Resource;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

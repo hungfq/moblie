@@ -17,12 +17,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import hcmute.edu.vn.store.bean.CategoryProduct;
+import hcmute.edu.vn.store.bean.Product;
+
 public class CategoryProductFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+
     private static final String ARG_IDUSER = "iduser";
 
-    // TODO: Rename and change types of parameters
     private String mParamIDUser;
 
     private List<CategoryProduct> lCategoryProducts;
@@ -32,7 +34,6 @@ public class CategoryProductFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static CategoryProductFragment newInstance(String param1) {
         CategoryProductFragment fragment = new CategoryProductFragment();
         Bundle args = new Bundle();

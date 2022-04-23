@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.bean.Bill;
+import hcmute.edu.vn.store.bean.BillDetail;
+
 public class BillDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

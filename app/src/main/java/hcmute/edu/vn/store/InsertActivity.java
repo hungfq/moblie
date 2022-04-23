@@ -18,6 +18,9 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import hcmute.edu.vn.store.bean.CategoryProduct;
+import hcmute.edu.vn.store.bean.Product;
+
 public class InsertActivity extends AppCompatActivity {
     private EditText name, idcate, price, des, quantity, state;
     private Button btncate, btnpro, btnimage;

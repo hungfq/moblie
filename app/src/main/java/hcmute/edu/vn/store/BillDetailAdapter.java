@@ -15,6 +15,9 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import hcmute.edu.vn.store.bean.BillDetail;
+import hcmute.edu.vn.store.bean.Product;
+
 public class BillDetailAdapter extends RecyclerView.Adapter<BillDetailAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
         private View itemview;

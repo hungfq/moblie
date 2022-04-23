@@ -15,6 +15,9 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import hcmute.edu.vn.store.bean.Cart;
+import hcmute.edu.vn.store.bean.Product;
+
 public class ConfirmOrderAdapter extends RecyclerView.Adapter<ConfirmOrderAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
         private View itemview;

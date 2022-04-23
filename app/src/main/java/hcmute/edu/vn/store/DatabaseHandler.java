@@ -1,5 +1,13 @@
 package hcmute.edu.vn.store;
 
+import                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            static hcmute.edu.vn.store.constants.DB.TABLE_BILL;
+import static hcmute.edu.vn.store.constants.DB.TABLE_BILLDETAIL;
+import static hcmute.edu.vn.store.constants.DB.TABLE_CART;
+import static hcmute.edu.vn.store.constants.DB.TABLE_CATEGORYPRODUCT;
+import static hcmute.edu.vn.store.constants.DB.TABLE_PRODUCT;
+import static hcmute.edu.vn.store.constants.DB.TABLE_ROLE;
+import static hcmute.edu.vn.store.constants.DB.TABLE_USER;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,27 +17,29 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import hcmute.edu.vn.store.bean.Bill;
+import hcmute.edu.vn.store.bean.BillDetail;
+import hcmute.edu.vn.store.bean.Cart;
+import hcmute.edu.vn.store.bean.CategoryProduct;
+import hcmute.edu.vn.store.bean.Product;
 import hcmute.edu.vn.store.bean.Role;
 import hcmute.edu.vn.store.bean.User;
+import hcmute.edu.vn.store.constants.DB;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "storedb.db";
-    private static final String TABLE_PRODUCT = "product";
-    private static final String TABLE_CATEGORYPRODUCT = "categoryproduct";
-    private static final String TABLE_USER = "user";
-    private static final String TABLE_ROLE = "role";
-    private static final String TABLE_CART = "cart";
-    private static final String TABLE_BILL = "bill";
-    private static final String TABLE_BILLDETAIL = "billdetail";
 
     public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DB.DATABASE_NAME, null, DB.DATABASE_VERSION);
     }
 
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
+        initDB(db);
+    }
+
+
+    public void initDB(SQLiteDatabase db) {
         String CREATE_CATEGORYPRODUCT_TABLE = "CREATE TABLE " + TABLE_CATEGORYPRODUCT + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "name NVARCHAR(255) NOT NULL UNIQUE,"
@@ -116,19 +126,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL(CREATE_BILLDETAIL_TABLE);
     }
 
-    public void createUserDefault(){
-        User user = new User();
-        user.setsName("Bao dep trai");
-        user.setsEmail("lequocbao29072001@gmail.com");
-        user.setsPhone("12345656");
-        user.setsPassword("123456");
-        user.setbVerifyEmail(1);
-        user.setiRole(2);
-        user.setsAddress("asldhalsdasd");
-        user.setbState(1);
-        registerUser(user);
-
-    }
     // Upgrading database
     // Auto call when exist DB on Storage but another version.
     @Override

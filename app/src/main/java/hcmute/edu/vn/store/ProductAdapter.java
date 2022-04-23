@@ -15,7 +15,8 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-import hcmute.edu.vn.store.constans.Resource;
+import hcmute.edu.vn.store.bean.Product;
+import hcmute.edu.vn.store.constants.Resource;
 
 public class ProductAdapter extends BaseAdapter {
     private Activity activity;

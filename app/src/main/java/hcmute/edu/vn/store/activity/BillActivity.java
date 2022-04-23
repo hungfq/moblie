@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
+
+import hcmute.edu.vn.store.BillAdapter;
+import hcmute.edu.vn.store.BillDetailActivity;
+import hcmute.edu.vn.store.DatabaseHandler;
+import hcmute.edu.vn.store.R;
+import hcmute.edu.vn.store.bean.Bill;
 
 public class BillActivity extends AppCompatActivity {
     private Toolbar toolbar;

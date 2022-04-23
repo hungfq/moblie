@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import hcmute.edu.vn.store.constans.Resource;
+import hcmute.edu.vn.store.bean.CategoryProduct;
+import hcmute.edu.vn.store.constants.Resource;
 
 public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProductAdapter.ViewHolder>{
 

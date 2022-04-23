@@ -1,2 +1,4 @@
-package hcmute.edu.vn.store.db;public class UserDAO {
+package hcmute.edu.vn.store.db;
+
+public class UserDAO {
 }

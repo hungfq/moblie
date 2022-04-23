@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.constans;
+package hcmute.edu.vn.store.constants;
 
 import hcmute.edu.vn.store.bean.Role;
 import hcmute.edu.vn.store.bean.User;

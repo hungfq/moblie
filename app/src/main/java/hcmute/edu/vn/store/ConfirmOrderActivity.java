@@ -16,6 +16,10 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import hcmute.edu.vn.store.bean.Bill;
+import hcmute.edu.vn.store.bean.BillDetail;
+import hcmute.edu.vn.store.bean.Cart;
+import hcmute.edu.vn.store.bean.Product;
 import hcmute.edu.vn.store.bean.User;
 
 public class ConfirmOrderActivity extends AppCompatActivity {

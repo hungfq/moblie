@@ -11,6 +11,9 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.bean.CategoryProduct;
+import hcmute.edu.vn.store.bean.Product;
+
 public class ProductActivity extends AppCompatActivity {
 
     List<Product> lProduct;

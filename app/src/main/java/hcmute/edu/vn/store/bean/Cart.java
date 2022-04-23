@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store;
+package hcmute.edu.vn.store.bean;
 
 public class Cart {
     private int iID;
