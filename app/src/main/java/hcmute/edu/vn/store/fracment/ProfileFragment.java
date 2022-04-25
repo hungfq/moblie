@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import hcmute.edu.vn.store.activity.AddCategoryActivity;
 import hcmute.edu.vn.store.db.DatabaseHandler;
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.activity.BillActivity;
@@ -120,6 +121,16 @@ public class ProfileFragment extends Fragment {
                         startActivity(intentHistory);
                         break;
                     case 3:
+                        Intent intentAddProduct = new Intent(getContext(), BillActivity.class);
+                        intentAddProduct.putExtra(ARG_IDUSER,mParamIDUser);
+                        startActivity(intentAddProduct);
+                        break;
+                    case 4:
+                        Intent intentAddCategory = new Intent(getContext(), AddCategoryActivity.class);
+                        intentAddCategory.putExtra(ARG_IDUSER,mParamIDUser);
+                        startActivity(intentAddCategory);
+                        break;
+                    case 5:
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setMessage("Are you sure you want to exit?")
                                 .setCancelable(false)
