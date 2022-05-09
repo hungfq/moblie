@@ -30,6 +30,10 @@ public class CategoryProduct {
         this.sName = Name;
         this.sSource = Source;
     }
+    public CategoryProduct(String Name){
+        this.sName = Name;
+    }
+
 
     public CategoryProduct(){};
 

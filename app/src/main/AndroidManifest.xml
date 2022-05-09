@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Store">
         <activity
+            android:name=".activity.AddEditCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.AddCategoryActivity"
             android:exported="false" />
         <activity android:name=".activity.InsertActivity" />

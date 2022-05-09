@@ -5,35 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AddCategoryActivity">
-
-    <TextView
-        android:id="@+id/label_name_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="80dp"
-        android:text="Name Category"
+    <ListView
+        android:id="@+id/listViewCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_save_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        tools:layout_editor_absoluteX="143dp"
-        tools:layout_editor_absoluteY="241dp" />
-
-    <EditText
-        android:id="@+id/txt_name_category"
-        android:layout_width="237dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/label_name_category"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
