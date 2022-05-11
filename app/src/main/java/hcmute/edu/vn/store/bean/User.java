@@ -1,6 +1,8 @@
 package hcmute.edu.vn.store.bean;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int iID;
     private String sName;
     private String sEmail;

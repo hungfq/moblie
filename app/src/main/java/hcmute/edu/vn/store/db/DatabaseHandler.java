@@ -124,6 +124,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + ")";
 
         db.execSQL(CREATE_BILLDETAIL_TABLE);
+
     }
 
     // Upgrading database

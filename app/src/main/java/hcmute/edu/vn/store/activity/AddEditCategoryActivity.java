@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import hcmute.edu.vn.store.R;
@@ -19,7 +20,7 @@ public class AddEditCategoryActivity extends AppCompatActivity {
     private static final int MODE_CREATE = 1;
     private static final int MODE_EDIT = 2;
 
-    private EditText textTitle;
+    private TextView textId;
     private EditText textContent;
     private Button buttonSave;
     private Button buttonCancel;
@@ -34,8 +35,8 @@ public class AddEditCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_category);
 
-        this.textTitle = (EditText)this.findViewById(R.id.editText_category_title);
-        this.textContent = (EditText)this.findViewById(R.id.editText_category_content);
+        this.textId = (TextView) this.findViewById(R.id.editText_category_id);
+        this.textContent = (EditText)this.findViewById(R.id.editText_category_name);
 
         this.buttonSave = (Button)findViewById(R.id.button_save);
         this.buttonCancel = (Button)findViewById(R.id.button_cancel);
@@ -57,7 +58,7 @@ public class AddEditCategoryActivity extends AppCompatActivity {
             this.mode = MODE_CREATE;
         } else  {
             this.mode = MODE_EDIT;
-            this.textTitle.setText(String.valueOf(categoryProduct.getiID()) );
+            this.textId.setText(String.valueOf(categoryProduct.getiID()) );
             this.textContent.setText(categoryProduct.getsName());
         }
 
@@ -67,10 +68,10 @@ public class AddEditCategoryActivity extends AppCompatActivity {
     public void buttonSaveClicked()  {
         DatabaseHandler db = new DatabaseHandler(this);
 
-        String title = this.textTitle.getText().toString();
+        String title = this.textId.getText().toString();
         String content = this.textContent.getText().toString();
 
-        if(title.equals("") || content.equals("")) {
+        if(content.equals("")) {
             Toast.makeText(getApplicationContext(),
                     "Please enter title & content", Toast.LENGTH_LONG).show();
             return;

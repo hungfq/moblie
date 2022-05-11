@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Store">
         <activity
+            android:name=".activity.AddEditProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.AddEditCategoryActivity"
             android:exported="false" />
         <activity

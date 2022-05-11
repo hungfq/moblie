@@ -1,6 +1,8 @@
 package hcmute.edu.vn.store.bean;
 
-public class BillDetail {
+import java.io.Serializable;
+
+public class BillDetail implements Serializable {
     private int iID;
     private int iIDBill;
     private int iIDProduct;

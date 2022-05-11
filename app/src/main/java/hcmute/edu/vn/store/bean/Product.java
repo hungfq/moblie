@@ -1,8 +1,10 @@
 package hcmute.edu.vn.store.bean;
 
+import java.io.Serializable;
+
 import hcmute.edu.vn.store.db.DatabaseHandler;
 
-public class Product {
+public class Product implements Serializable {
     private int iID;
     private String sName;
     private int iIDCategory;

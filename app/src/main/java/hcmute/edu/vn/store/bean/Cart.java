@@ -1,6 +1,8 @@
 package hcmute.edu.vn.store.bean;
 
-public class Cart {
+import java.io.Serializable;
+
+public class Cart implements Serializable {
     private int iID;
     private int iIDProduct;
     private int iIDUser;
