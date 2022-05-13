@@ -83,13 +83,13 @@ public class AddProductActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),selectedProduct.toString(), Toast.LENGTH_LONG).show();
         }
         else if(item.getItemId() == MENU_ITEM_CREATE){
-            Intent intent = new Intent(this, AddEditCategoryActivity.class);
+            Intent intent = new Intent(this, AddEditProductActivity.class);
 
             // Start AddEditCategoryActivity, (with feedback).
             this.startActivityForResult(intent, MY_REQUEST_CODE);
         }
         else if(item.getItemId() == MENU_ITEM_EDIT ){
-            Intent intent = new Intent(this, AddEditCategoryActivity.class);
+            Intent intent = new Intent(this, AddEditProductActivity.class);
             intent.putExtra("product",  selectedProduct);
 
             // Start AddEditCategoryActivity, (with feedback).

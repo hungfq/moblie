@@ -86,4 +86,18 @@ public class Product implements Serializable {
         db.insertProduct(new Product("Orange Juice",2,15000,"Orange juice!",null,20, 1));
         db.insertProduct(new Product("Strawberry Smoothie",2,20000,"Strawberry",null,20, 0));
     }
+
+    public Product(String sName, long lPrice, String sDescription, int iQuantity) {
+        this.sName = sName;
+        this.lPrice = lPrice;
+        this.sDescription = sDescription;
+        this.iQuantity = iQuantity;
+        this.iIDCategory=1;
+        this.iState=1;
+    }
+
+    @Override
+    public String toString() {
+        return sName ;
+    }
 }

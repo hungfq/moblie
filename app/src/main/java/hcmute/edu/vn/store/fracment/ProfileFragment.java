@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.activity.AddCategoryActivity;
+import hcmute.edu.vn.store.activity.AddProductActivity;
 import hcmute.edu.vn.store.activity.BillActivity;
 import hcmute.edu.vn.store.activity.ChangePasswordActivity;
 import hcmute.edu.vn.store.activity.EditProfileActivity;
@@ -112,7 +113,7 @@ public class ProfileFragment extends Fragment {
                         startActivity(intentHistory);
                         break;
                     case 3:
-                        Intent intentAddProduct = new Intent(getContext(), BillActivity.class);
+                        Intent intentAddProduct = new Intent(getContext(), AddProductActivity.class);
                         intentAddProduct.putExtra(ARG_IDUSER, mParamIDUser);
                         startActivity(intentAddProduct);
                         break;
