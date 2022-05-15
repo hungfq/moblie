@@ -4,15 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +34,9 @@ import hcmute.edu.vn.store.db.DatabaseHandler;
 
 public class AddEditProductActivity extends AppCompatActivity {
 
+    private static final int CAMERA_PIC_REQUEST = 1337;
+    private static final int PICK_IMAGE_REQUEST = 1;
+
     private static final int MODE_CREATE = 1;
     private static final int MODE_EDIT = 2;
 
@@ -35,6 +47,11 @@ public class AddEditProductActivity extends AppCompatActivity {
     private EditText textQuantity;
     private Button buttonSave;
     private Button buttonCancel;
+    private ImageView imgProduct;
+    private byte[] source;
+
+    private Button ibtn_camera;
+    private Button ibtn_library;
 
     private Product product;
     private List<CategoryProduct> categories ;
@@ -57,6 +74,9 @@ public class AddEditProductActivity extends AppCompatActivity {
         this.buttonSave = (Button)findViewById(R.id.btn_product_save);
         this.buttonCancel = (Button)findViewById(R.id.btn_product_cancel);
         this.spinnerCategories = (Spinner)findViewById(R.id.spiner_categories);
+        this.imgProduct = (ImageView) findViewById(R.id.imgProduct);
+        this.ibtn_camera = (Button) findViewById(R.id.btn_upload_image_product_cam);
+        this.ibtn_library = (Button) findViewById(R.id.btn_upload_image_product_lib);
 
 
         this.buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +88,24 @@ public class AddEditProductActivity extends AppCompatActivity {
         this.buttonCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
                 buttonCancelClicked();
+            }
+        });
+
+
+        this.ibtn_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_camera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent_camera, CAMERA_PIC_REQUEST);
+            }
+        });
+
+        this.ibtn_library.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, PICK_IMAGE_REQUEST);
             }
         });
 
@@ -89,9 +127,14 @@ public class AddEditProductActivity extends AppCompatActivity {
         if(product== null)  {
             this.mode = MODE_CREATE;
             this.spinnerCategories.setSelection(0);
+            if(product.getsSource() != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(product.getsSource(), 0, product.getsSource().length);
+                this.imgProduct.setImageBitmap(bitmap);
+            }
+
         } else  {
             this.mode = MODE_EDIT;
-            System.out.println(product.getiID());
+//            System.out.println(product.getiID());
             this.textId.setText(String.valueOf(product.getiID()) );
             this.textName.setText(product.getsName());
             this.textPrice.setText(String.valueOf(product.getlPrice()));
@@ -108,6 +151,10 @@ public class AddEditProductActivity extends AppCompatActivity {
             } else {
                 this.spinnerCategories.setSelection(items.indexOf(category));
             }
+            if(product.getsSource() != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(product.getsSource(), 0, product.getsSource().length);
+                this.imgProduct.setImageBitmap(bitmap);
+            }
 
         }
 
@@ -115,6 +162,7 @@ public class AddEditProductActivity extends AppCompatActivity {
 
     // User Click on the Save button.
     public void buttonSaveClicked()  {
+        ImageViewToByteArray();
         DatabaseHandler db = new DatabaseHandler(this);
 
         String id = this.textId.getText().toString();
@@ -126,12 +174,17 @@ public class AddEditProductActivity extends AppCompatActivity {
         Integer idCategory = this.hashCategories.get(categoryString);
         if(name.equals("")||price.equals("")||textQuantity.equals("")) {
             Toast.makeText(getApplicationContext(),
-                    "Please enter title & content", Toast.LENGTH_LONG).show();
+                    "Please enter name & price & quantity", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(mode == MODE_CREATE ) {
-            this.product = new Product(name,Long.parseLong(price),textDescription,Integer.parseInt(textQuantity),idCategory);
+            if(this.source!=null) {
+                this.product = new Product(name,Long.parseLong(price),textDescription,Integer.parseInt(textQuantity),idCategory,this.source);
+            } else {
+                this.product = new Product(name,Long.parseLong(price),textDescription,Integer.parseInt(textQuantity),idCategory);
+
+            }
             db.insertProduct(product);
         } else  {
             System.out.println("data get in form");
@@ -141,6 +194,9 @@ public class AddEditProductActivity extends AppCompatActivity {
             this.product.setiQuantity(Integer.parseInt(textQuantity));
             this.product.setiIDCategory(idCategory);
             this.product.setiState(1);
+            if(this.source != null ) {
+                this.product.setsSource(this.source);
+            }
             db.updateProduct(product);
         }
 
@@ -171,5 +227,37 @@ public class AddEditProductActivity extends AppCompatActivity {
         // Set Result
         this.setResult(Activity.RESULT_OK, data);
         super.finish();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_PIC_REQUEST  && resultCode == RESULT_OK) {
+            try {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                this.imgProduct.setImageBitmap(image);
+            }
+            catch (Exception e){
+
+            }
+        }
+        if(requestCode == PICK_IMAGE_REQUEST  && resultCode == RESULT_OK){
+            try {
+                if(data.getData() != null){
+                    Uri selectedImage = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                    this.imgProduct.setImageBitmap(bitmap);
+                }
+            } catch (IOException e) {
+                Log.i("TAG", "Some exception " + e);
+            }
+        }
+    }
+
+    private void ImageViewToByteArray(){
+        // Lưu hình dạng byte[]
+        Bitmap image = ((BitmapDrawable) this.imgProduct.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        source = baos.toByteArray();
     }
 }

@@ -106,26 +106,29 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_product_description" />
 
     <Button
-        android:id="@+id/btn_product_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="92dp"
         android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_product_quantity" />
+        app:layout_constraintTop_toBottomOf="@+id/label_image_product"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_product_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="84dp"
         android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.774"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/btn_product_save"
-        app:layout_constraintTop_toBottomOf="@+id/txt_product_quantity" />
+        app:layout_constraintTop_toBottomOf="@+id/imgProduct"
+        app:layout_constraintVertical_bias="0.101" />
 
     <TextView
         android:id="@+id/txt_product_id"
@@ -157,5 +160,53 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
+
+    <ImageView
+        android:id="@+id/imgProduct"
+        android:layout_width="200dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/label_image_product"
+        app:layout_constraintTop_toBottomOf="@+id/spiner_categories"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/label_image_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="148dp"
+        android:text="Image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_product_quantity" />
+
+    <Button
+        android:id="@+id/btn_upload_image_product_cam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="12dp"
+        android:text="USE CAM"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgProduct"
+        app:layout_constraintTop_toBottomOf="@+id/spiner_categories"
+        app:layout_constraintVertical_bias="0.833" />
+
+    <Button
+        android:id="@+id/btn_upload_image_product_lib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="40dp"
+        android:text="USE LIB"
+        app:layout_constraintBottom_toTopOf="@+id/btn_product_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgProduct" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
