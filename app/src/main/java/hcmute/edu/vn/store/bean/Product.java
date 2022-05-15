@@ -96,6 +96,15 @@ public class Product implements Serializable {
         this.iState=1;
     }
 
+    public Product(String sName, long lPrice, String sDescription, int iQuantity, int IDCategory) {
+        this.sName = sName;
+        this.lPrice = lPrice;
+        this.sDescription = sDescription;
+        this.iQuantity = iQuantity;
+        this.iIDCategory=IDCategory;
+        this.iState=1;
+    }
+
     @Override
     public String toString() {
         return sName ;
