@@ -40,7 +40,6 @@ public class AddEditProductActivity extends AppCompatActivity {
     private static final int MODE_CREATE = 1;
     private static final int MODE_EDIT = 2;
 
-    private TextView textId;
     private EditText textName;
     private EditText textPrice;
     private EditText textDescription;
@@ -66,7 +65,6 @@ public class AddEditProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_edit_product);
 
         // setup value in displays
-        this.textId = (TextView) this.findViewById(R.id.txt_product_id);
         this.textName = (EditText) this.findViewById(R.id.txt_product_name);
         this.textPrice = (EditText)this.findViewById(R.id.txt_product_price);
         this.textDescription = (EditText) this.findViewById(R.id.txt_product_description);
@@ -134,8 +132,6 @@ public class AddEditProductActivity extends AppCompatActivity {
 
         } else  {
             this.mode = MODE_EDIT;
-//            System.out.println(product.getiID());
-            this.textId.setText(String.valueOf(product.getiID()) );
             this.textName.setText(product.getsName());
             this.textPrice.setText(String.valueOf(product.getlPrice()));
             this.textQuantity.setText(String.valueOf(product.getiQuantity()));
@@ -164,8 +160,6 @@ public class AddEditProductActivity extends AppCompatActivity {
     public void buttonSaveClicked()  {
         ImageViewToByteArray();
         DatabaseHandler db = new DatabaseHandler(this);
-
-        String id = this.textId.getText().toString();
         String name = this.textName.getText().toString();
         String price = this.textPrice.getText().toString();
         String textDescription = this.textDescription.getText().toString();
