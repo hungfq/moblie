@@ -32,7 +32,9 @@
         <entry key="..\:/Mobile/Store_new/app/src/main/res/layout/activity_add_category.xml" value="0.2907608695652174" />
         <entry key="..\:/Mobile/Store_new/app/src/main/res/layout/activity_add_edit_category.xml" value="0.36666666666666664" />
         <entry key="..\:/Mobile/Store_new/app/src/main/res/layout/activity_add_edit_product.xml" value="0.264" />
+        <entry key="..\:/Mobile/Store_new/app/src/main/res/layout/activity_add_edit_user.xml" value="0.264" />
         <entry key="..\:/Mobile/Store_new/app/src/main/res/layout/activity_add_product.xml" value="0.18802083333333333" />
+        <entry key="..\:/Mobile/Store_new/app/src/main/res/layout/activity_add_user.xml" value="0.1125" />
       </map>
     </option>
   </component>

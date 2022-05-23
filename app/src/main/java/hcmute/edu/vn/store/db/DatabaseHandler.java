@@ -218,6 +218,40 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         cursor.close();
         return  categoryProductList;
     }
+
+    public List<Role> getListRoles(){
+        List<Role> roleList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_ROLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Role role = new Role();
+                role.setiID(Integer.parseInt(cursor.getString(0)));
+                role.setsName(cursor.getString(1));
+                // Adding contact to list
+                roleList.add(role);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return  roleList;
+    }
+
+    public Role getRoleById(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_ROLE + " WHERE id = " + String.valueOf(id);
+
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+        Role role = new Role();
+        role.setiID(Integer.parseInt(cursor.getString(0)));
+        role.setsName(cursor.getString(1));
+        cursor.close();
+        return role;
+    }
 //endregion
 
     //region PRODUCT
@@ -254,6 +288,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_PRODUCT, "id = ? ", new String[]{String.valueOf(product.getiID())});
+        db.close();
+    }
+
+    public void deleteUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_USER, "id = ? ", new String[]{String.valueOf(user.getiID())});
         db.close();
     }
 

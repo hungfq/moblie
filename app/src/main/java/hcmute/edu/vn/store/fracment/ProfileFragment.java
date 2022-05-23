@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.activity.AddCategoryActivity;
 import hcmute.edu.vn.store.activity.AddProductActivity;
+import hcmute.edu.vn.store.activity.AddUserActivity;
 import hcmute.edu.vn.store.activity.BillActivity;
 import hcmute.edu.vn.store.activity.ChangePasswordActivity;
 import hcmute.edu.vn.store.activity.EditProfileActivity;
@@ -86,60 +87,104 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         String[] lItem = {"Edit Profile", "Change Password", "Order History", "Log Out"};
         if (Integer.parseInt(mparamIDRole) == 2) {
-            lItem = new String[]{"Edit Profile", "Change Password", "Order History", "Add product", "Add Category", "Log Out"};
+            lItem = new String[]{"Edit Profile", "Change Password", "Order History", "Management Product", "Management Category", "Management User", "Log Out"};
         }
 
         lv_profile = (ListView) view.findViewById(R.id.lv_profile);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, lItem);
         lv_profile.setAdapter(adapter);
-
-        lv_profile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        Intent intentEdit = new Intent(getContext(), EditProfileActivity.class);
-                        intentEdit.putExtra(ARG_IDUSER, mParamIDUser);
-                        startActivityForResult(intentEdit, REQUEST_CODE_EDIT);
-                        break;
-                    case 1:
-                        Intent intentChange = new Intent(getContext(), ChangePasswordActivity.class);
-                        intentChange.putExtra(ARG_IDUSER, mParamIDUser);
-                        startActivity(intentChange);
-                        break;
-                    case 2:
-                        Intent intentHistory = new Intent(getContext(), BillActivity.class);
-                        intentHistory.putExtra(ARG_IDUSER, mParamIDUser);
-                        startActivity(intentHistory);
-                        break;
-                    case 3:
-                        Intent intentAddProduct = new Intent(getContext(), AddProductActivity.class);
-                        intentAddProduct.putExtra(ARG_IDUSER, mParamIDUser);
-                        startActivity(intentAddProduct);
-                        break;
-                    case 4:
-                        Intent intentAddCategory = new Intent(getContext(), AddCategoryActivity.class);
-                        intentAddCategory.putExtra(ARG_IDUSER, mParamIDUser);
-                        startActivity(intentAddCategory);
-                        break;
-                    case 5:
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Are you sure you want to exit?")
-                                .setCancelable(false)
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        getActivity().finish();
-                                        Intent intentLogin = new Intent(getContext(), LoginActivity.class);
-                                        startActivity(intentLogin);
-                                    }
-                                })
-                                .setNegativeButton("No", null);
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                        break;
+        if (Integer.parseInt(mparamIDRole) == 2) {
+            lv_profile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            Intent intentEdit = new Intent(getContext(), EditProfileActivity.class);
+                            intentEdit.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivityForResult(intentEdit, REQUEST_CODE_EDIT);
+                            break;
+                        case 1:
+                            Intent intentChange = new Intent(getContext(), ChangePasswordActivity.class);
+                            intentChange.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentChange);
+                            break;
+                        case 2:
+                            Intent intentHistory = new Intent(getContext(), BillActivity.class);
+                            intentHistory.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentHistory);
+                            break;
+                        case 3:
+                            Intent intentAddProduct = new Intent(getContext(), AddProductActivity.class);
+                            intentAddProduct.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentAddProduct);
+                            break;
+                        case 4:
+                            Intent intentAddCategory = new Intent(getContext(), AddCategoryActivity.class);
+                            intentAddCategory.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentAddCategory);
+                            break;
+                        case 5:
+                            Intent intentAddUser = new Intent(getContext(), AddUserActivity.class);
+                            intentAddUser.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentAddUser);
+                            break;
+                        case 6:
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("Are you sure you want to exit?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            getActivity().finish();
+                                            Intent intentLogin = new Intent(getContext(), LoginActivity.class);
+                                            startActivity(intentLogin);
+                                        }
+                                    })
+                                    .setNegativeButton("No", null);
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            lv_profile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            Intent intentEdit = new Intent(getContext(), EditProfileActivity.class);
+                            intentEdit.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivityForResult(intentEdit, REQUEST_CODE_EDIT);
+                            break;
+                        case 1:
+                            Intent intentChange = new Intent(getContext(), ChangePasswordActivity.class);
+                            intentChange.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentChange);
+                            break;
+                        case 2:
+                            Intent intentHistory = new Intent(getContext(), BillActivity.class);
+                            intentHistory.putExtra(ARG_IDUSER, mParamIDUser);
+                            startActivity(intentHistory);
+                            break;
+                        case 3:
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("Are you sure you want to exit?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            getActivity().finish();
+                                            Intent intentLogin = new Intent(getContext(), LoginActivity.class);
+                                            startActivity(intentLogin);
+                                        }
+                                    })
+                                    .setNegativeButton("No", null);
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                            break;
+                    }
+                }
+            });
+        }
         return view;
     }
 

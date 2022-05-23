@@ -26,41 +26,39 @@ import java.util.List;
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.bean.Product;
+import hcmute.edu.vn.store.bean.Role;
+import hcmute.edu.vn.store.bean.User;
 import hcmute.edu.vn.store.db.DatabaseHandler;
 
-public class AddProductActivity extends AppCompatActivity {
+public class AddUserActivity extends AppCompatActivity {
     private ListView listView;
     private static final int MENU_ITEM_VIEW = 111;
     private static final int MENU_ITEM_EDIT = 222;
     private static final int MENU_ITEM_CREATE = 333;
     private static final int MENU_ITEM_DELETE = 444;
     private static final int MY_REQUEST_CODE = 1000;
-    private static final String CHANNEL_ID = "product";
+    private static final String CHANNEL_ID = "user";
 
-    private final List<Product> productList = new ArrayList<Product>();
-    private ArrayAdapter<Product> listViewAdapter;
-
+    private final List<User> userList = new ArrayList<>();
+    private ArrayAdapter<User> listViewAdapter;
     private NotificationCompat.Builder builder;
     private NotificationManagerCompat notificationManager;
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_product);
-
+        setContentView(R.layout.activity_add_user);
         // Get ListView object from xml
-        this.listView = (ListView) findViewById(R.id.listViewProduct);
+        this.listView = (ListView) findViewById(R.id.listViewUser);
         DatabaseHandler db = new DatabaseHandler(this);
 
-        List<Product> listViewCategory = db.getListProduct();
-        this.productList.addAll(listViewCategory);
+        List<User> listViewUser = db.getListUser();
+        this.userList.addAll(listViewUser);
 
 
-        this.listViewAdapter = new ArrayAdapter<Product>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, this.productList);
+        this.listViewAdapter = new ArrayAdapter<User>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, this.userList);
 
         // Assign adapter to ListView
         this.listView.setAdapter(this.listViewAdapter);
@@ -75,19 +73,8 @@ public class AddProductActivity extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager = NotificationManagerCompat.from(this);
 
-    }
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-                                    ContextMenu.ContextMenuInfo menuInfo)    {
 
-        super.onCreateContextMenu(menu, view, menuInfo);
-        menu.setHeaderTitle("Select The Action");
 
-        // groupId, itemId, order, title
-        menu.add(0, MENU_ITEM_VIEW , 0, "View Product");
-        menu.add(0, MENU_ITEM_CREATE , 1, "Create Product");
-        menu.add(0, MENU_ITEM_EDIT , 2, "Edit Product");
-        menu.add(0, MENU_ITEM_DELETE, 4, "Delete Product");
     }
 
     private void createNotificationChannel() {
@@ -106,14 +93,28 @@ public class AddProductActivity extends AppCompatActivity {
         }
     }
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+                                    ContextMenu.ContextMenuInfo menuInfo)    {
+
+        super.onCreateContextMenu(menu, view, menuInfo);
+        menu.setHeaderTitle("Select The Action");
+
+        // groupId, itemId, order, title
+        menu.add(0, MENU_ITEM_VIEW , 0, "View user");
+        menu.add(0, MENU_ITEM_CREATE , 1, "Create user");
+        menu.add(0, MENU_ITEM_EDIT , 2, "Edit user");
+        menu.add(0, MENU_ITEM_DELETE, 4, "Delete user");
+    }
+
+    @Override
     public boolean onContextItemSelected(MenuItem item){
         AdapterView.AdapterContextMenuInfo
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        final Product selectedProduct = (Product)this.listView.getItemAtPosition(info.position);
+        final User selectedUser = (User)this.listView.getItemAtPosition(info.position);
 
         if(item.getItemId() == MENU_ITEM_VIEW){
-            Toast.makeText(getApplicationContext(),selectedProduct.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),selectedUser.toString(), Toast.LENGTH_LONG).show();
         }
         else if(item.getItemId() == MENU_ITEM_CREATE){
             Intent intent = new Intent(this, AddEditProductActivity.class);
@@ -123,7 +124,7 @@ public class AddProductActivity extends AppCompatActivity {
         }
         else if(item.getItemId() == MENU_ITEM_EDIT ){
             Intent intent = new Intent(this, AddEditProductActivity.class);
-            intent.putExtra("product",  selectedProduct);
+            intent.putExtra("user",  selectedUser);
 
             // Start AddEditCategoryActivity, (with feedback).
             this.startActivityForResult(intent,MY_REQUEST_CODE);
@@ -131,11 +132,12 @@ public class AddProductActivity extends AppCompatActivity {
         else if(item.getItemId() == MENU_ITEM_DELETE){
             // Ask before deleting.
             new AlertDialog.Builder(this)
-                    .setMessage(selectedProduct.getsName()+". Are you sure you want to delete?")
+                    .setMessage(selectedUser.getsName()+". Are you sure you want to delete?")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteProduct(selectedProduct);
+                            deleteProduct(selectedUser);
+
                             // notificationId is a unique int for each notification that you must define
                             notificationManager.notify(100, builder.build());
                         }
@@ -150,10 +152,10 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     // Delete a record
-    private void deleteProduct(Product product)  {
+    private void deleteProduct(User user)  {
         DatabaseHandler db = new DatabaseHandler(this);
-        db.deleteProduct(product);
-        this.productList.remove(product);
+        db.deleteUser(user);
+        this.userList.remove(user);
         // Refresh ListView.
         this.listViewAdapter.notifyDataSetChanged();
     }
@@ -168,11 +170,10 @@ public class AddProductActivity extends AppCompatActivity {
             boolean needRefresh = data.getBooleanExtra("needRefresh", true);
             // Refresh ListView
             if (needRefresh) {
-                this.productList.clear();
+                this.userList.clear();
                 DatabaseHandler db = new DatabaseHandler(this);
-                List<Product> list = db.getListProduct();
-                this.productList.addAll(list);
-
+                List<User> list = db.getListUser();
+                this.userList.addAll(list);
 
                 // Notify the data change (To refresh the ListView).
                 this.listViewAdapter.notifyDataSetChanged();

@@ -125,4 +125,9 @@ public class User implements Serializable {
         this.iRole = Role;
         this.sAddress = address;
     }
+
+    @Override
+    public String toString() {
+        return sName;
+    }
 }
