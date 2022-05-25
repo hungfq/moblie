@@ -104,6 +104,29 @@ public class User implements Serializable {
         this.sSource = source;
     }
 
+    public User(String Name, String Email, String Address, String Phone, int Role, byte[] source){
+        this.sName = Name;
+        this.sEmail = Email;
+        this.sPhone = Phone;
+        this.sPassword = "12345678";
+        this.iVerifyEmail = 1;
+        this.iState = 1;
+        this.iRole = Role;
+        this.sSource = source;
+        this.sAddress = Address;
+    }
+    public User(String Name, String Email, String Address, String Phone, int Role){
+        this.sName = Name;
+        this.sEmail = Email;
+        this.sPhone = Phone;
+        this.sPassword = "12345678";
+        this.iVerifyEmail = 1;
+        this.iState = 1;
+        this.iRole = Role;
+        this.sAddress = Address;
+    }
+
+
     public User(String Name, String Email, String Phone, String Password, int VerifyEmail, int State, int Role, byte[] source, String address){
         this.sName = Name;
         this.sEmail = Email;

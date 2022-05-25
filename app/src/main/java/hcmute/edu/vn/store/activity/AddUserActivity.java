@@ -117,13 +117,13 @@ public class AddUserActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),selectedUser.toString(), Toast.LENGTH_LONG).show();
         }
         else if(item.getItemId() == MENU_ITEM_CREATE){
-            Intent intent = new Intent(this, AddEditProductActivity.class);
+            Intent intent = new Intent(this, AddEditUserActivity.class);
 
             // Start AddEditCategoryActivity, (with feedback).
             this.startActivityForResult(intent, MY_REQUEST_CODE);
         }
         else if(item.getItemId() == MENU_ITEM_EDIT ){
-            Intent intent = new Intent(this, AddEditProductActivity.class);
+            Intent intent = new Intent(this, AddEditUserActivity.class);
             intent.putExtra("user",  selectedUser);
 
             // Start AddEditCategoryActivity, (with feedback).
