@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         fragment = new CategoryProductFragment();
         fragment.setArguments(bundle);
         loadFragment(fragment);
-
-        User admin = new User();
     }
 
     @Override

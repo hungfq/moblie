@@ -122,8 +122,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + "unitprice DECIMAL DEFAULT(0) NOT NULL,"
                 + "CONSTRAINT fk_billdetail_idbill FOREIGN KEY(idbill) REFERENCES bill(id)"
                 + ")";
-
         db.execSQL(CREATE_BILLDETAIL_TABLE);
+        String INSEST_VALUE_TABLEROLE_ADMIN = "INSERT INTO "+ TABLE_ROLE + " VALUES(1, 'ADMIN')";
+        String INSEST_VALUE_TABLEROLE_USER = "INSERT INTO "+ TABLE_ROLE + " VALUES(2, 'USER')";
+        db.execSQL(INSEST_VALUE_TABLEROLE_ADMIN);
+        db.execSQL(INSEST_VALUE_TABLEROLE_USER);
 
     }
 

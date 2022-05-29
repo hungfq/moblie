@@ -46,7 +46,7 @@ public class AddEditUserActivity extends AppCompatActivity {
     private EditText textPhone;
     private Button buttonSave;
     private Button buttonCancel;
-    private ImageView imgProduct;
+    private ImageView imgUser;
     private byte[] source;
 
     private Button ibtn_camera;
@@ -72,7 +72,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         this.buttonSave = (Button)findViewById(R.id.btn_user_save);
         this.buttonCancel = (Button)findViewById(R.id.btn_user_cancel);
         this.spinnerRoles = (Spinner)findViewById(R.id.spinner_user_role);
-        this.imgProduct = (ImageView) findViewById(R.id.img_user);
+        this.imgUser = (ImageView) findViewById(R.id.img_user);
         this.ibtn_camera = (Button) findViewById(R.id.btn_upload_image_user_cam);
         this.ibtn_library = (Button) findViewById(R.id.btn_upload_image_user_lib);
 
@@ -113,10 +113,14 @@ public class AddEditUserActivity extends AppCompatActivity {
         List<String> items  = new ArrayList<>();
 
         hashRoles = new HashMap<>();
-        for(Role role : roles) {
-            hashRoles.put(role.getsName(), role.getiID());
-            items.add(role.getsName());
-        }
+//        for(Role role : roles) {
+//            hashRoles.put(role.getsName(), role.getiID());
+//            items.add(role.getsName());
+//        }
+        hashRoles.put("ADMIN",1);
+        hashRoles.put("USER",2);
+        items.add("ADMIN");
+        items.add("USER");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //set the spinners adapter to the previously created one.
@@ -127,7 +131,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             this.spinnerRoles.setSelection(0);
             if(user.getsSource() != null) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(user.getsSource(), 0, user.getsSource().length);
-                this.imgProduct.setImageBitmap(bitmap);
+                this.imgUser.setImageBitmap(bitmap);
             }
 
         } else  {
@@ -149,7 +153,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             }
             if(user.getsSource() != null) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(user.getsSource(), 0, user.getsSource().length);
-                this.imgProduct.setImageBitmap(bitmap);
+                this.imgUser.setImageBitmap(bitmap);
             }
 
         }
@@ -167,7 +171,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         Integer idRoles = this.hashRoles.get(categoryString);
         if(name.equals("")||address.equals("")||email.equals("")||phone.equals("")) {
             Toast.makeText(getApplicationContext(),
-                    "Please enter name & price & quantity", Toast.LENGTH_LONG).show();
+                    "Please enter name & address & phone", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -228,7 +232,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         if (requestCode == CAMERA_PIC_REQUEST  && resultCode == RESULT_OK) {
             try {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                this.imgProduct.setImageBitmap(image);
+                this.imgUser.setImageBitmap(image);
             }
             catch (Exception e){
 
@@ -239,7 +243,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 if(data.getData() != null){
                     Uri selectedImage = data.getData();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                    this.imgProduct.setImageBitmap(bitmap);
+                    this.imgUser.setImageBitmap(bitmap);
                 }
             } catch (IOException e) {
                 Log.i("TAG", "Some exception " + e);
@@ -249,7 +253,7 @@ public class AddEditUserActivity extends AppCompatActivity {
 
     private void ImageViewToByteArray(){
         // Lưu hình dạng byte[]
-        Bitmap image = ((BitmapDrawable) this.imgProduct.getDrawable()).getBitmap();
+        Bitmap image = ((BitmapDrawable) this.imgUser.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         source = baos.toByteArray();
