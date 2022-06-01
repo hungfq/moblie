@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,22 +17,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.bean.Product;
+import hcmute.edu.vn.store.bean.Role;
+import hcmute.edu.vn.store.bean.User;
 import hcmute.edu.vn.store.db.DatabaseHandler;
 
-public class AddEditProductActivity extends AppCompatActivity {
+public class AddEditUserActivity extends AppCompatActivity {
 
     private static final int CAMERA_PIC_REQUEST = 1337;
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -41,40 +41,40 @@ public class AddEditProductActivity extends AppCompatActivity {
     private static final int MODE_EDIT = 2;
 
     private EditText textName;
-    private EditText textPrice;
-    private EditText textDescription;
-    private EditText textQuantity;
+    private EditText textEmail;
+    private EditText textAddress;
+    private EditText textPhone;
     private Button buttonSave;
     private Button buttonCancel;
-    private ImageView imgProduct;
+    private ImageView imgUser;
     private byte[] source;
 
     private Button ibtn_camera;
     private Button ibtn_library;
 
-    private Product product;
-    private List<CategoryProduct> categories ;
+    private User user;
+    private List<Role> roles ;
     private boolean needRefresh;
     private int mode;
-    private Spinner spinnerCategories;
-    private HashMap<String, Integer> hashCategories;
+    private Spinner spinnerRoles;
+    private HashMap<String, Integer> hashRoles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DatabaseHandler db = new DatabaseHandler(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_product);
-
+        setContentView(R.layout.activity_add_edit_user);
+        DatabaseHandler db = new DatabaseHandler(this);
         // setup value in displays
-        this.textName = (EditText) this.findViewById(R.id.txt_product_name);
-        this.textPrice = (EditText)this.findViewById(R.id.txt_product_price);
-        this.textDescription = (EditText) this.findViewById(R.id.txt_product_description);
-        this.textQuantity= (EditText)this.findViewById(R.id.txt_product_quantity);
-        this.buttonSave = (Button)findViewById(R.id.btn_product_save);
-        this.buttonCancel = (Button)findViewById(R.id.btn_product_cancel);
-        this.spinnerCategories = (Spinner)findViewById(R.id.spiner_categories);
-        this.imgProduct = (ImageView) findViewById(R.id.imgProduct);
-        this.ibtn_camera = (Button) findViewById(R.id.btn_upload_image_product_cam);
-        this.ibtn_library = (Button) findViewById(R.id.btn_upload_image_product_lib);
+        this.textName = (EditText) this.findViewById(R.id.txt_user_name);
+        this.textEmail = (EditText)this.findViewById(R.id.txt_user_email);
+        this.textAddress = (EditText) this.findViewById(R.id.txt_user_address);
+        this.textPhone= (EditText)this.findViewById(R.id.txt_user_phone);
+        this.buttonSave = (Button)findViewById(R.id.btn_user_save);
+        this.buttonCancel = (Button)findViewById(R.id.btn_user_cancel);
+        this.spinnerRoles = (Spinner)findViewById(R.id.spinner_user_role);
+        this.imgUser = (ImageView) findViewById(R.id.img_user);
+        this.ibtn_camera = (Button) findViewById(R.id.btn_upload_image_user_cam);
+        this.ibtn_library = (Button) findViewById(R.id.btn_upload_image_user_lib);
 
 
         this.buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -108,86 +108,90 @@ public class AddEditProductActivity extends AppCompatActivity {
         });
 
         Intent intent = this.getIntent();
-        this.product = (Product) intent.getSerializableExtra("product");
-        this.categories = db.getListCategoryProduct();
+        this.user = (User) intent.getSerializableExtra("user");
+        this.roles = db.getListRoles();
         List<String> items  = new ArrayList<>();
 
-        hashCategories = new HashMap<>();
-        for(CategoryProduct c : categories) {
-            hashCategories.put(c.getsName(), c.getiID());
-            items.add(c.getsName());
-        }
+        hashRoles = new HashMap<>();
+//        for(Role role : roles) {
+//            hashRoles.put(role.getsName(), role.getiID());
+//            items.add(role.getsName());
+//        }
+        hashRoles.put("ADMIN",1);
+        hashRoles.put("USER",2);
+        items.add("ADMIN");
+        items.add("USER");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //set the spinners adapter to the previously created one.
-        spinnerCategories.setAdapter(adapter);
+        spinnerRoles.setAdapter(adapter);
 
-        if(product== null)  {
+        if(user== null)  {
             this.mode = MODE_CREATE;
-            this.spinnerCategories.setSelection(0);
+            this.spinnerRoles.setSelection(0);
 
         } else  {
             this.mode = MODE_EDIT;
-            this.textName.setText(product.getsName());
-            this.textPrice.setText(String.valueOf(product.getlPrice()));
-            this.textQuantity.setText(String.valueOf(product.getiQuantity()));
-            this.textDescription.setText(String.valueOf(product.getsDescription()));
-            String category = "";
-            for(String i : hashCategories.keySet()) {
-                if(hashCategories.get(i).equals(product.getiIDCategory())) {
-                    category = i;
+            this.textName.setText(user.getsName());
+            this.textEmail.setText(String.valueOf(user.getsEmail()));
+            this.textAddress.setText(String.valueOf(user.getsAddress()));
+            this.textPhone.setText(String.valueOf(user.getsPhone()));
+            String role = "";
+            for(String i : hashRoles.keySet()) {
+                if(hashRoles.get(i).equals(user.getiRole())) {
+                    role = i;
                 }
             }
-            if(category.equals("")) {
-                this.spinnerCategories.setSelection(0);
+            if(role.equals("")) {
+                this.spinnerRoles.setSelection(0);
             } else {
-                this.spinnerCategories.setSelection(items.indexOf(category));
+                this.spinnerRoles.setSelection(items.indexOf(role));
             }
-            if(product.getsSource() != null) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(product.getsSource(), 0, product.getsSource().length);
-                this.imgProduct.setImageBitmap(bitmap);
+            if(user.getsSource() != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(user.getsSource(), 0, user.getsSource().length);
+                this.imgUser.setImageBitmap(bitmap);
             }
 
         }
 
     }
-
     // User Click on the Save button.
     public void buttonSaveClicked()  {
         ImageViewToByteArray();
         DatabaseHandler db = new DatabaseHandler(this);
         String name = this.textName.getText().toString();
-        String price = this.textPrice.getText().toString();
-        String textDescription = this.textDescription.getText().toString();
-        String textQuantity = this.textQuantity.getText().toString();
-        String categoryString = this.spinnerCategories.getSelectedItem().toString();
-        Integer idCategory = this.hashCategories.get(categoryString);
-        if(name.equals("")||price.equals("")||textQuantity.equals("")) {
+        String address = this.textAddress.getText().toString();
+        String email = this.textEmail.getText().toString();
+        String phone = this.textPhone.getText().toString();
+        String categoryString = this.spinnerRoles.getSelectedItem().toString();
+        Integer idRoles = this.hashRoles.get(categoryString);
+        if(name.equals("")||address.equals("")||email.equals("")||phone.equals("")) {
             Toast.makeText(getApplicationContext(),
-                    "Please enter name & price & quantity", Toast.LENGTH_LONG).show();
+                    "Please enter name & address & phone", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(mode == MODE_CREATE ) {
             if(this.source!=null) {
-                this.product = new Product(name,Long.parseLong(price),textDescription,Integer.parseInt(textQuantity),idCategory,this.source);
+                this.user = new User(name,email,address,phone,idRoles,this.source);
             } else {
-                this.product = new Product(name,Long.parseLong(price),textDescription,Integer.parseInt(textQuantity),idCategory);
+                this.user = new User(name,email,address,phone,idRoles);
 
             }
-            db.insertProduct(product);
+            db.registerUser(user);
         } else  {
             System.out.println("data get in form");
-            this.product.setsName(name);
-            this.product.setlPrice(Long.parseLong(price));
-            this.product.setsDescription(textDescription);
-            this.product.setiQuantity(Integer.parseInt(textQuantity));
-            this.product.setiIDCategory(idCategory);
-            this.product.setiState(1);
+            this.user.setsName(name);
+            this.user.setsEmail(email);
+            this.user.setsAddress(address);
+            this.user.setsPhone(phone);
+            this.user.setiRole(idRoles);
+            this.user.setbState(1);
+            this.user.setbVerifyEmail(1);
             if(this.source != null ) {
-                this.product.setsSource(this.source);
+                this.user.setsSource(this.source);
             }
-            db.updateProduct(product);
+            db.updateUser(user);
         }
 
         this.needRefresh = true;
@@ -224,7 +228,7 @@ public class AddEditProductActivity extends AppCompatActivity {
         if (requestCode == CAMERA_PIC_REQUEST  && resultCode == RESULT_OK) {
             try {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                this.imgProduct.setImageBitmap(image);
+                this.imgUser.setImageBitmap(image);
             }
             catch (Exception e){
 
@@ -235,7 +239,7 @@ public class AddEditProductActivity extends AppCompatActivity {
                 if(data.getData() != null){
                     Uri selectedImage = data.getData();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                    this.imgProduct.setImageBitmap(bitmap);
+                    this.imgUser.setImageBitmap(bitmap);
                 }
             } catch (IOException e) {
                 Log.i("TAG", "Some exception " + e);
@@ -245,7 +249,7 @@ public class AddEditProductActivity extends AppCompatActivity {
 
     private void ImageViewToByteArray(){
         // Lưu hình dạng byte[]
-        Bitmap image = ((BitmapDrawable) this.imgProduct.getDrawable()).getBitmap();
+        Bitmap image = ((BitmapDrawable) this.imgUser.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         source = baos.toByteArray();

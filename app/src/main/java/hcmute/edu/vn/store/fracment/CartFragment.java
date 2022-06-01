@@ -31,23 +31,15 @@ import hcmute.edu.vn.store.db.DatabaseHandler;
 import hcmute.edu.vn.store.utils.ItemCheckedListener;
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.utils.RecyclerItemTouchHelper;
-import hcmute.edu.vn.store.activity.ConfirmOrderActivity;
+import hcmute.edu.vn.store.activity.order.ConfirmOrderActivity;
 import hcmute.edu.vn.store.adapter.CartAdapter;
 import hcmute.edu.vn.store.bean.Cart;
 import pl.droidsonroids.gif.GifImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CartFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, ItemCheckedListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_IDUSER = "iduser";
 
-    // TODO: Rename and change types of parameters
+    private static final String ARG_IDUSER = "iduser";
     private String mParamIDUser;
     private RecyclerView rv_cart;
     private List<Cart> lCarts;
@@ -65,14 +57,6 @@ public class CartFragment extends Fragment implements RecyclerItemTouchHelper.Re
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment CartFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CartFragment newInstance(String param1) {
         CartFragment fragment = new CartFragment();
         Bundle args = new Bundle();

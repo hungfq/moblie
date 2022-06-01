@@ -20,7 +20,7 @@ import java.util.List;
 
 import hcmute.edu.vn.store.utils.ItemClickListener;
 import hcmute.edu.vn.store.R;
-import hcmute.edu.vn.store.activity.ProductActivity;
+import hcmute.edu.vn.store.activity.product.ProductActivity;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.constants.Resource;
 

@@ -12,32 +12,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Store">
         <activity
-            android:name=".activity.AddEditUserActivity"
+            android:name=".activity.user.AddEditUserActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddUserActivity"
+            android:name=".activity.user.AddUserActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddEditProductActivity"
+            android:name=".activity.product.AddEditProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddProductActivity"
+            android:name=".activity.product.AddProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddEditCategoryActivity"
+            android:name=".activity.category.AddEditCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddCategoryActivity"
+            android:name=".activity.category.AddCategoryActivity"
             android:exported="false" />
         <activity android:name=".activity.InsertActivity" />
         <activity android:name=".activity.BillDetailActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.EditProfileActivity" />
-        <activity android:name=".activity.ConfirmOrderActivity" />
+        <activity android:name=".activity.user.EditProfileActivity" />
+        <activity android:name=".activity.order.ConfirmOrderActivity" />
         <activity android:name=".activity.BillActivity" />
-        <activity android:name=".activity.ProductDetailActivity" />
+        <activity android:name=".activity.product.ProductDetailActivity" />
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.ProductActivity" />
+        <activity android:name=".activity.product.ProductActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.LoginActivity">

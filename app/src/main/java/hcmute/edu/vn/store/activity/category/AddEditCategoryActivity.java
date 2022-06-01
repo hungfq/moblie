@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.category;
 
 import androidx.appcompat.app.AppCompatActivity;
 

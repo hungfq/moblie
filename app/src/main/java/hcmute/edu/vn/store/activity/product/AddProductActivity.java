@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.product;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hcmute.edu.vn.store.R;
-import hcmute.edu.vn.store.bean.CategoryProduct;
+import hcmute.edu.vn.store.activity.product.AddEditProductActivity;
 import hcmute.edu.vn.store.bean.Product;
 import hcmute.edu.vn.store.db.DatabaseHandler;
 
@@ -83,8 +83,7 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         menu.setHeaderTitle("Select The Action");
 
-        // groupId, itemId, order, title
-        menu.add(0, MENU_ITEM_VIEW , 0, "View Product");
+
         menu.add(0, MENU_ITEM_CREATE , 1, "Create Product");
         menu.add(0, MENU_ITEM_EDIT , 2, "Edit Product");
         menu.add(0, MENU_ITEM_DELETE, 4, "Delete Product");
@@ -94,8 +93,8 @@ public class AddProductActivity extends AppCompatActivity {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "user channel";
-            String description = "Xoa user";
+            CharSequence name = "Product channel";
+            String description = "Delete Product Success!";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);

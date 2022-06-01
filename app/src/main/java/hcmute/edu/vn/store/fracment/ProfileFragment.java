@@ -19,12 +19,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import hcmute.edu.vn.store.R;
-import hcmute.edu.vn.store.activity.AddCategoryActivity;
-import hcmute.edu.vn.store.activity.AddProductActivity;
-import hcmute.edu.vn.store.activity.AddUserActivity;
+import hcmute.edu.vn.store.activity.category.AddCategoryActivity;
+import hcmute.edu.vn.store.activity.product.AddProductActivity;
+import hcmute.edu.vn.store.activity.user.AddUserActivity;
 import hcmute.edu.vn.store.activity.BillActivity;
 import hcmute.edu.vn.store.activity.ChangePasswordActivity;
-import hcmute.edu.vn.store.activity.EditProfileActivity;
+import hcmute.edu.vn.store.activity.user.EditProfileActivity;
 import hcmute.edu.vn.store.activity.LoginActivity;
 import hcmute.edu.vn.store.bean.Role;
 import hcmute.edu.vn.store.bean.User;

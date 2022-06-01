@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.category;
 
 import androidx.appcompat.app.AppCompatActivity;
 import hcmute.edu.vn.store.R;
@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +62,7 @@ public class AddCategoryActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         menu.setHeaderTitle("Select The Action");
 
-        // groupId, itemId, order, title
-        menu.add(0, MENU_ITEM_VIEW , 0, "View Category");
+
         menu.add(0, MENU_ITEM_CREATE , 1, "Create Category");
         menu.add(0, MENU_ITEM_EDIT , 2, "Edit Category");
         menu.add(0, MENU_ITEM_DELETE, 4, "Delete Category");
