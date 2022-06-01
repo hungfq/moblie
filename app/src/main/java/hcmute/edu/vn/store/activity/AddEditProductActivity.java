@@ -125,10 +125,6 @@ public class AddEditProductActivity extends AppCompatActivity {
         if(product== null)  {
             this.mode = MODE_CREATE;
             this.spinnerCategories.setSelection(0);
-            if(product.getsSource() != null) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(product.getsSource(), 0, product.getsSource().length);
-                this.imgProduct.setImageBitmap(bitmap);
-            }
 
         } else  {
             this.mode = MODE_EDIT;

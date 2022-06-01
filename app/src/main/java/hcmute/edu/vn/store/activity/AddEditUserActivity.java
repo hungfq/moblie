@@ -129,10 +129,6 @@ public class AddEditUserActivity extends AppCompatActivity {
         if(user== null)  {
             this.mode = MODE_CREATE;
             this.spinnerRoles.setSelection(0);
-            if(user.getsSource() != null) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(user.getsSource(), 0, user.getsSource().length);
-                this.imgUser.setImageBitmap(bitmap);
-            }
 
         } else  {
             this.mode = MODE_EDIT;
