@@ -22,10 +22,10 @@ import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.activity.category.AddCategoryActivity;
 import hcmute.edu.vn.store.activity.product.AddProductActivity;
 import hcmute.edu.vn.store.activity.user.AddUserActivity;
-import hcmute.edu.vn.store.activity.BillActivity;
-import hcmute.edu.vn.store.activity.ChangePasswordActivity;
+import hcmute.edu.vn.store.activity.bill.BillActivity;
+import hcmute.edu.vn.store.activity.user.ChangePasswordActivity;
 import hcmute.edu.vn.store.activity.user.EditProfileActivity;
-import hcmute.edu.vn.store.activity.LoginActivity;
+import hcmute.edu.vn.store.activity.login.LoginActivity;
 import hcmute.edu.vn.store.bean.Role;
 import hcmute.edu.vn.store.bean.User;
 import hcmute.edu.vn.store.db.DatabaseHandler;
@@ -86,14 +86,14 @@ public class ProfileFragment extends Fragment {
 
         // Inflate the layout for this fragment
         String[] lItem = {"Edit Profile", "Change Password", "Order History", "Log Out"};
-        if (Integer.parseInt(mparamIDRole) == 2) {
+        if (Integer.parseInt(mparamIDRole) == 1) {
             lItem = new String[]{"Edit Profile", "Change Password", "Order History", "Management Product", "Management Category", "Management User", "Log Out"};
         }
 
         lv_profile = (ListView) view.findViewById(R.id.lv_profile);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, lItem);
         lv_profile.setAdapter(adapter);
-        if (Integer.parseInt(mparamIDRole) == 2) {
+        if (Integer.parseInt(mparamIDRole) == 1) {
             lv_profile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.login;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

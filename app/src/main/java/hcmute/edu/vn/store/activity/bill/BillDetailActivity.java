@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.bill;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;

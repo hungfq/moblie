@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

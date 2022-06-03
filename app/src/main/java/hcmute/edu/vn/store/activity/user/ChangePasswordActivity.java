@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

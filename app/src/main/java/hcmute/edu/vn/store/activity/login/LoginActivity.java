@@ -1,4 +1,4 @@
-package hcmute.edu.vn.store.activity;
+package hcmute.edu.vn.store.activity.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import hcmute.edu.vn.store.activity.MainActivity;
 import hcmute.edu.vn.store.db.DatabaseHandler;
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.User;

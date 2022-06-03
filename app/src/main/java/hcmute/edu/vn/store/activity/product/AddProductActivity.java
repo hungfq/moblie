@@ -70,8 +70,8 @@ public class AddProductActivity extends AppCompatActivity {
         createNotificationChannel();
         builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_delete_24)
-                .setContentTitle("Thong bao")
-                .setContentText("Ban da xoa thanh cong")
+                .setContentTitle("Notification")
+                .setContentText("You have been delete successful")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager = NotificationManagerCompat.from(this);
 

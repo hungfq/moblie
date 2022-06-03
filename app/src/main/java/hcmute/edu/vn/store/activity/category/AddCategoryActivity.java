@@ -1,6 +1,9 @@
 package hcmute.edu.vn.store.activity.category;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import hcmute.edu.vn.store.R;
 import hcmute.edu.vn.store.bean.CategoryProduct;
 import hcmute.edu.vn.store.db.DatabaseHandler;
@@ -28,9 +31,14 @@ public class AddCategoryActivity extends AppCompatActivity {
     private static final int MENU_ITEM_CREATE = 333;
     private static final int MENU_ITEM_DELETE = 444;
     private static final int MY_REQUEST_CODE = 1000;
+    private static final String CHANNEL_ID = "category";
 
     private final List<CategoryProduct> categoryList = new ArrayList<CategoryProduct>();
     private ArrayAdapter<CategoryProduct> listViewAdapter;
+
+    private NotificationCompat.Builder builder;
+    private NotificationManagerCompat notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,13 @@ public class AddCategoryActivity extends AppCompatActivity {
 
         // Assign adapter to ListView
         this.listView.setAdapter(this.listViewAdapter);
+
+        builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_delete_24)
+                .setContentTitle("Notification")
+                .setContentText("You have been delete successful")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        notificationManager = NotificationManagerCompat.from(this);
 
         // Register the ListView for Context menu
         registerForContextMenu(this.listView);
@@ -99,6 +114,7 @@ public class AddCategoryActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             deleteCategory(selectedCategory);
+                            notificationManager.notify(100, builder.build());
                         }
                     })
                     .setNegativeButton("No", null)

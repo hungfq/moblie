@@ -29,18 +29,18 @@
         <activity
             android:name=".activity.category.AddCategoryActivity"
             android:exported="false" />
-        <activity android:name=".activity.InsertActivity" />
-        <activity android:name=".activity.BillDetailActivity" />
-        <activity android:name=".activity.ChangePasswordActivity" />
+        <activity android:name=".activity.category.InsertActivity" />
+        <activity android:name=".activity.bill.BillDetailActivity" />
+        <activity android:name=".activity.user.ChangePasswordActivity" />
         <activity android:name=".activity.user.EditProfileActivity" />
         <activity android:name=".activity.order.ConfirmOrderActivity" />
-        <activity android:name=".activity.BillActivity" />
+        <activity android:name=".activity.bill.BillActivity" />
         <activity android:name=".activity.product.ProductDetailActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.product.ProductActivity" />
-        <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".activity.login.ForgotPasswordActivity" />
+        <activity android:name=".activity.login.RegisterActivity" />
+        <activity android:name=".activity.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
